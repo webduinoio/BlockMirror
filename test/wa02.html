@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Simple BlockMirror</title>
+    <!-- remove jquery 
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    -->
+    <!-- Blockly 
+    <script src="../lib/blockly/blockly_compressed.js" type="text/javascript"></script>
+    <script src="../lib/blockly/blocks_compressed.js" type="text/javascript"></script>
+    <script src="../lib/blockly/msg/js/en.js" type="text/javascript"></script>
+    <script src="../lib/blockly/python_compressed.js" type="text/javascript"></script>
+    -->
+    <!-- new Blockly -->
+    <script src="../../blockly/blockly_compressed.js" type="text/javascript"></script>
+    <script src="../../blockly/blocks_compressed.js" type="text/javascript"></script>
+    <script src="../../blockly/msg/js/en.js" type="text/javascript"></script>
+    <script src="../../blockly/python_compressed.js" type="text/javascript"></script>
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="../lib/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../lib/codemirror/fullscreen.css">
+    <link rel="stylesheet" href="../lib/codemirror/show-hint.css">
+    <script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/show-hint.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/python-hint.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/fullscreen.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/python.js" type="text/javascript"></script>
+    <style>
+        .CodeMirror {
+            font-family: Arial, monospace;
+            font-size: 20px;
+        }
+    </style>
+    <!-- Skulpt -->
+    <script src="../dist/skulpt_parser.js" type="text/javascript"></script>
+
+    <!-- BlockMirror -->
+    <link rel="stylesheet" href="../dist/block_mirror.css">
+    <script src="../dist/block_mirror.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+        <div class="btn-group" data-toggle="buttons" data-bind="visible: !assignment.upload()">
+            <label onclick="editor.setMode('block');">
+                <input type="radio" name="blockpy-mode-set" autocomplete="off"> Blocks
+            </label>
+            <label onclick="editor.setMode('split');">
+                <input type="radio" name="blockpy-mode-set" autocomplete="off" checked> Split
+            </label>
+            <label onclick="editor.setMode('text');">
+                <input type="radio" name="blockpy-mode-set" autocomplete="off"> Text
+            </label>
+            <button id='go'>Run</button>
+        </div>
+
+        <div class="btn-group" data-toggle="buttons" style="display: inline-block">
+            <label>
+                <input type="checkbox" name="blockpy-mode-set" checked
+                    onclick="editor.setImageMode(!editor.configuration.imageMode);">
+                Image Mode
+            </label>
+        </div>
+
+        <div id="blockmirror-editor"></div>
+
+
+    <script type="text/javascript">
+        var editor = new BlockMirror({
+            'container': document.getElementById('blockmirror-editor'),
+            'height': '700'
+        });
+        editor.addChangeListener(function (event) {
+            console.log('Change! Better save:', event)
+        });
+        editor.textEditor.codeMirror.on('keypress', (instance) => {
+            instance.showHint();
+        });
+        editor.setCode('print("Hello World!")');
+    </script>
+</body>
+
+</html>
