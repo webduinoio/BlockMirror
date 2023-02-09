@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Simple BlockMirror</title>
+
+    <!-- Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
+
+    <!-- Blockly 
+    <script src="../lib/blockly/blockly_compressed.js" type="text/javascript"></script>
+    <script src="../lib/blockly/blocks_compressed.js" type="text/javascript"></script>
+    <script src="../lib/blockly/msg/js/en.js" type="text/javascript"></script>
+    <script src="../lib/blockly/python_compressed.js" type="text/javascript"></script>
+    -->
+    <!-- new Blockly -->
+    <script src="../../blockly/blockly_compressed.js" type="text/javascript"></script>
+    <script src="../../blockly/blocks_compressed.js" type="text/javascript"></script>
+    <script src="../../blockly/msg/js/en.js" type="text/javascript"></script>
+    <script src="../../blockly/python_compressed.js" type="text/javascript"></script>
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="../lib/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../lib/codemirror/fullscreen.css">
+    <link rel="stylesheet" href="../lib/codemirror/show-hint.css">
+    <script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/show-hint.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/python-hint.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/fullscreen.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/python.js" type="text/javascript"></script>
+    <style>
+        .CodeMirror {
+            font-family: Arial, monospace;
+            font-size: 20px;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        #code-frame {
+            float: left;
+            width: 75%;
+            margin: 1%;
+        }
+
+        #output {
+            float: left;
+            width: 21%;
+            height: 50vh;
+            color: #Fefefe;
+            background-color: #303030;
+            padding-left: 1%;
+            margin-top: 1%;
+            margin-bottom: 1%;
+            margin-right: 1%;
+            margin-left: 0%;
+
+        }
+    </style>
+    <!-- Skulpt -->
+    <script src="../dist/skulpt_parser.js" type="text/javascript"></script>
+
+    <!-- BlockMirror -->
+    <link rel="stylesheet" href="../dist/block_mirror.css">
+    <script src="../dist/block_mirror.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <br>
+    <div class="btn-group" data-toggle="buttons" data-bind="visible: !assignment.upload()">
+        <label onclick="editor.setMode('block');">
+            <input type="radio" name="blockpy-mode-set" autocomplete="off"> Blocks
+        </label>
+        <label onclick="editor.setMode('split');">
+            <input type="radio" name="blockpy-mode-set" autocomplete="off" checked> Split
+        </label>
+        <label onclick="editor.setMode('text');">
+            <input type="radio" name="blockpy-mode-set" autocomplete="off"> Text
+        </label>
+        <button id='run' disabled="enable">Run</button>
+    </div>
+    <div id='code-frame'>
+        <div id="blockmirror-editor"></div>
+    </div>
+    <div id="output"></div>
+
+    <script type="text/javascript">
+        let run = document.getElementById('run');
+        let output = document.getElementById('output');
+        var editor = new BlockMirror({
+            'container': document.getElementById('blockmirror-editor'),
+            'height': '700',
+            // empty, minimal , ct , normal , full
+            'toolbox': 'full',
+        });
+        editor.addChangeListener(function (event) {
+            console.log('Change! Better save:', event)
+        });
+        editor.textEditor.codeMirror.on('keypress', (instance) => {
+            instance.showHint();
+        });
+        editor.setCode('print("Hello World!")');
+        run.addEventListener('click', async function () {
+            output.innerHTML = '';
+            await runPython(editor.getCode());
+        });
+    </script>
+    <script src="../lib/pyodide/lib_pyodide.js"></script>
+</body>
+
+</html>
