@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Simple BlockMirror</title>
+    <!-- Blockly -->
+    <script src="../../blockly/blockly_compressed.js" type="text/javascript"></script>
+    <script src="../../blockly/blocks_compressed.js" type="text/javascript"></script>
+    <script src="../../blockly/msg/js/en.js" type="text/javascript"></script>
+    <script src="../../blockly/python_compressed.js" type="text/javascript"></script>
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="../lib/codemirror/codemirror.css">
+    <link rel="stylesheet" href="../lib/codemirror/fullscreen.css">
+    <link rel="stylesheet" href="../lib/codemirror/show-hint.css">
+    <script src="../lib/codemirror/codemirror.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/show-hint.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/python-hint.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/fullscreen.js" type="text/javascript"></script>
+    <script src="../lib/codemirror/python.js" type="text/javascript"></script>
+    <style>
+        .CodeMirror {
+            font-family: Arial, monospace;
+            font-size: 20px;
+        }
+    </style>
+    <!-- Skulpt -->
+    <script src="../../skulpt/dist/skulpt.min.js" type="text/javascript"></script>
+    <script src="../../skulpt/dist/skulpt-stdlib.js" type="text/javascript"></script>
+
+    <!-- BlockMirror -->
+    <link rel="stylesheet" href="../dist/block_mirror.css">
+    <script src="../dist/block_mirror.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <div id="blockmirror-editor">
+
+        <script type="text/javascript">
+            var editor = new BlockMirror({
+                'container': document.getElementById('blockmirror-editor'),
+                'height': '700'
+            });
+            editor.textEditor.codeMirror.on('keypress',(instance)=>{
+                instance.showHint();
+            });
+            editor.addChangeListener(function (event) {
+                console.log('Change! Better save:', event)
+            });
+            editor.setCode('a = 0\nb=0\nprint(b)');
+        </script>
+</body>
+
+</html>
