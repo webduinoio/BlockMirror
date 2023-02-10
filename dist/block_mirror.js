@@ -893,7 +893,13 @@ function BlockMirrorBlockEditor(blockMirror) {
 
   this.outOfDate_ = null; // Have to call BEFORE we inject, or Blockly will delete the css string!
 
-  this.loadBlocklyCSS(); // Inject Blockly
+  this.loadBlocklyCSS();
+
+  this.setToolbox = function (tb) {
+    this.blockEditor.blockMirror.configuration.toolbox = tb;
+    this.blockEditor.remakeToolbox();
+  }; // Inject Blockly
+
 
   var blocklyOptions = (_blocklyOptions = {
     media: blockMirror.configuration.blocklyMediaPath,

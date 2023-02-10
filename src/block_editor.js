@@ -17,6 +17,11 @@ function BlockMirrorBlockEditor(blockMirror) {
     // Have to call BEFORE we inject, or Blockly will delete the css string!
     this.loadBlocklyCSS();
 
+    this.setToolbox = function (tb) {
+        this.blockEditor.blockMirror.configuration.toolbox = tb;
+        this.blockEditor.remakeToolbox()
+    }
+
     // Inject Blockly
     let blocklyOptions = {
         media: blockMirror.configuration.blocklyMediaPath,
