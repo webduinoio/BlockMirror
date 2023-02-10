@@ -906,13 +906,14 @@ function BlockMirrorBlockEditor(blockMirror) {
     media: '../lib/blockly/media/',
     grid:
     {
-      spacing: 20,
+      spacing: 25,
       length: 3,
       colour: '#ccc',
       snap: true
     },
   };
   this.workspace = Blockly.inject(blockMirror.tags.blockEditor, blocklyOptions); // Configure Blockly
+  //Blockly.setLocale('zh-hant');
 
   this.workspace.addChangeListener(this.changed.bind(this)); // Configure Blockly DIV
   //blockMirror.tags.blockEditor.style.resize = 'horizontal';

@@ -31,7 +31,7 @@ function BlockMirrorBlockEditor(blockMirror) {
         media: '../lib/blockly/media/',
         grid:
         {
-            spacing: 20,
+            spacing: 25,
             length: 3,
             colour: '#ccc',
             snap: true
