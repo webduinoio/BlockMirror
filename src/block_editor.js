@@ -21,14 +21,25 @@ function BlockMirrorBlockEditor(blockMirror) {
     let blocklyOptions = {
         media: blockMirror.configuration.blocklyMediaPath,
         // We use special comment blocks
-        zoom: {controls: true},
+        zoom: { controls: true },
         comments: false,
         disable: false,
         oneBasedIndex: false,
         readOnly: blockMirror.configuration.readOnly,
         scrollbars: true,
-        toolbox: this.makeToolbox()
+        toolbox: this.makeToolbox(),
+        media: '../lib/blockly/media/',
+        grid:
+        {
+            spacing: 20,
+            length: 3,
+            colour: '#ccc',
+            snap: true
+        },
     };
+    //var workspace = Blockly.inject(blocklyDiv,
+    { toolbox: document.getElementById("toolbox"), media: './' });
+
     this.workspace = Blockly.inject(blockMirror.tags.blockEditor,
         blocklyOptions);
     // Configure Blockly
@@ -65,8 +76,8 @@ BlockMirrorBlockEditor.prototype.resizeReadOnlyDiv = function () {
             current = current.offsetParent;
         } while (current);
         // Position blocklyDiv over blockArea.
-        this.readOnlyDiv_.css("left", x+'px');
-        this.readOnlyDiv_.css("top", y+'px');
+        this.readOnlyDiv_.css("left", x + 'px');
+        this.readOnlyDiv_.css("top", y + 'px');
         this.readOnlyDiv_.css("width", blockArea.offsetWidth + 'px');
         this.readOnlyDiv_.css("height", blockArea.offsetHeight + 'px');
     }
@@ -144,14 +155,14 @@ BlockMirrorBlockEditor.prototype.makeToolbox = function () {
         toolbox = this.TOOLBOXES[toolbox];
     }
     // Convert if necessary
-    if (typeof toolbox  !== "string") {
+    if (typeof toolbox !== "string") {
         toolbox = this.toolboxPythonToBlocks(toolbox);
     }
     // TODO: Fix Hack, this should be configurable by instance rather than by class
     for (let name in BlockMirrorBlockEditor.EXTRA_TOOLS) {
         toolbox += BlockMirrorBlockEditor.EXTRA_TOOLS[name];
     }
-    return '<xml id="toolbox" style="display:none">'+toolbox+'</xml>';
+    return '<xml id="toolbox" style="display:none">' + toolbox + '</xml>';
 };
 
 BlockMirrorBlockEditor.prototype.remakeToolbox = function () {
@@ -193,16 +204,16 @@ BlockMirrorBlockEditor.prototype.resizeResponsively = function () {
     if (mode === 'split') {
         if (window.innerWidth >= this.blockMirror.BREAK_WIDTH) {
             this.blockContainer.style.width = configuration.width;
-            this.blockContainer.style.height = this.blockMirror.configuration.height+"px";
+            this.blockContainer.style.height = this.blockMirror.configuration.height + "px";
             this.blockArea.style.height = this.blockMirror.configuration.height + "px";
         } else {
             this.blockContainer.style.width = '100%';
-            this.blockContainer.style.height = (this.blockMirror.configuration.height/2)+"px";
-            this.blockArea.style.height = (this.blockMirror.configuration.height/2)+"px";
+            this.blockContainer.style.height = (this.blockMirror.configuration.height / 2) + "px";
+            this.blockArea.style.height = (this.blockMirror.configuration.height / 2) + "px";
         }
     } else if (mode === 'block') {
         this.blockContainer.style.width = configuration.width;
-        this.blockContainer.style.height = this.blockMirror.configuration.height+"px";
+        this.blockContainer.style.height = this.blockMirror.configuration.height + "px";
         this.blockArea.style.height = this.blockMirror.configuration.height + "px";
     }
 };
@@ -291,7 +302,7 @@ BlockMirrorBlockEditor.prototype.isVisible = function () {
 
 BlockMirrorBlockEditor.prototype.DOCTYPE = '<?xml version="1.0" standalone="no"?> <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
 BlockMirrorBlockEditor.prototype.BLOCKLY_LOADED_CSS = null;
-BlockMirrorBlockEditor.prototype.loadBlocklyCSS = function() {
+BlockMirrorBlockEditor.prototype.loadBlocklyCSS = function () {
     if (this.BLOCKLY_LOADED_CSS === null) {
         let result = [".blocklyDraggable {}"];
         result = result.concat(Blockly.Css.CONTENT);
@@ -315,7 +326,7 @@ BlockMirrorBlockEditor.prototype.loadBlocklyCSS = function() {
  *  This function should take two parameters, the URL (as a string) of the generated
  *  base64-encoded PNG and the IMG tag.
  */
-BlockMirrorBlockEditor.prototype.getPngFromBlocks = function(callback) {
+BlockMirrorBlockEditor.prototype.getPngFromBlocks = function (callback) {
     try {
         this.loadBlocklyCSS();
         // Retreive the entire canvas, strip some unnecessary tags
@@ -336,7 +347,7 @@ BlockMirrorBlockEditor.prototype.getPngFromBlocks = function(callback) {
             var bbox = document.getElementsByClassName("blocklyBlockCanvas")[0].getBBox();
             // Create the XML representation of the SVG
             var xml = new XMLSerializer().serializeToString(blocks);
-            xml = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="'+bbox.width+'" height="'+bbox.height+'" viewBox="0 0 '+bbox.width+" "+bbox.height+'"><rect width="100%" height="100%" fill="white"></rect>'+xml+"</svg>";
+            xml = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + bbox.width + '" height="' + bbox.height + '" viewBox="0 0 ' + bbox.width + " " + bbox.height + '"><rect width="100%" height="100%" fill="white"></rect>' + xml + "</svg>";
             // create a file blob of our SVG.
             // Unfortunately, this crashes modern chrome for unknown reasons.
             //var blob = new Blob([ this.DOCTYPE + xml], { type: 'image/svg+xml' });
@@ -344,9 +355,9 @@ BlockMirrorBlockEditor.prototype.getPngFromBlocks = function(callback) {
             // Old method: this failed on IE
             var url = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(xml)));
             // Create an IMG tag to hold the new element
-            var img  = document.createElement("img");
+            var img = document.createElement("img");
             img.style.display = "block";
-            img.onload = function() {
+            img.onload = function () {
                 var canvas = document.createElement("canvas");
                 canvas.width = bbox.width;
                 canvas.height = bbox.height;
@@ -365,7 +376,7 @@ BlockMirrorBlockEditor.prototype.getPngFromBlocks = function(callback) {
                 img.onload = null;
                 callback(canvasUrl, img);
             };
-            img.onerror = function() {
+            img.onerror = function () {
                 callback("", img);
             };
             img.setAttribute("src", url);
@@ -378,7 +389,7 @@ BlockMirrorBlockEditor.prototype.getPngFromBlocks = function(callback) {
     }
 };
 
-BlockMirrorBlockEditor.prototype.highlightLines = function(lines, style) {
+BlockMirrorBlockEditor.prototype.highlightLines = function (lines, style) {
     // Make some kind of block map?
     /*this.workspace.getAllBlocks().map((block) => {
         block
