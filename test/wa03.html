@@ -14,12 +14,6 @@
     <script src="../lib/blockly/msg/js/en.js" type="text/javascript"></script>
     <script src="../lib/blockly/python_compressed.js" type="text/javascript"></script>
 
-    <!-- new Blockly 
-    <script src="../../blockly/blockly_compressed.js" type="text/javascript"></script>
-    <script src="../../blockly/blocks_compressed.js" type="text/javascript"></script>
-    <script src="../../blockly/msg/js/en.js" type="text/javascript"></script>
-    <script src="../../blockly/python_compressed.js" type="text/javascript"></script>
-    -->
     <!-- CodeMirror -->
     <link rel="stylesheet" href="../lib/codemirror/codemirror.css">
     <link rel="stylesheet" href="../lib/codemirror/fullscreen.css">
@@ -38,9 +32,12 @@
         body {
             margin: 0;
         }
+
         #menubar {
+            top: 5px;
             height: 40px;
         }
+
         #code-frame {
             float: left;
             width: 75%;
@@ -60,6 +57,17 @@
             color: #Fefefe;
             background-color: #303030;
             padding-left: 10px;
+            padding-top: 10px;
+        }
+
+        #output-title {
+            font-size: 20px;
+            height: 32px;
+            line-height: 32px;
+            color: #Fefefe;
+            padding-left: 10px;
+            background-color: #707070;
+
         }
     </style>
     <!-- Skulpt -->
@@ -72,23 +80,25 @@
 </head>
 
 <body>
-    <br>
     <div id='menubar' class="btn-group" data-toggle="buttons" data-bind="visible: !assignment.upload()">
-        <label onclick="editor.setMode('block');">
-            <input type="radio" name="blockpy-mode-set" autocomplete="off"> Blocks
-        </label>
-        <label onclick="editor.setMode('split');">
-            <input type="radio" name="blockpy-mode-set" autocomplete="off" checked> Split
-        </label>
-        <label onclick="editor.setMode('text');">
-            <input type="radio" name="blockpy-mode-set" autocomplete="off"> Text
-        </label>
-        <button id='run' disabled="enable">Run</button>
+        <div style="padding-top: 10px;">
+            <label onclick="editor.setMode('block');">
+                <input type="radio" name="blockpy-mode-set" autocomplete="off"> Blocks
+            </label>
+            <label onclick="editor.setMode('split');">
+                <input type="radio" name="blockpy-mode-set" autocomplete="off" checked> Split
+            </label>
+            <label onclick="editor.setMode('text');">
+                <input type="radio" name="blockpy-mode-set" autocomplete="off"> Text
+            </label>
+            <button id='run' disabled="enable">Run</button>
+        </div>
     </div>
     <div id='code-frame'>
         <div id="blockmirror-editor"></div>
     </div>
     <div id="output-frame">
+        <div id='output-title'>Python 終端輸出</div>
         <div id="output"></div>
     </div>
 
@@ -100,7 +110,7 @@
             'container': document.getElementById('blockmirror-editor'),
             'height': window.innerHeight - menubar.scrollHeight /*toolbar height*/,
             // empty, minimal , ct , normal , full
-            'toolbox': 'full',
+            'toolbox': 'wa',
         });
         editor.addChangeListener(function (event) {
             console.log('Change! Better save:', event)

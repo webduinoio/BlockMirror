@@ -37,9 +37,6 @@ function BlockMirrorBlockEditor(blockMirror) {
             snap: true
         },
     };
-    //var workspace = Blockly.inject(blocklyDiv,
-    { toolbox: document.getElementById("toolbox"), media: './' });
-
     this.workspace = Blockly.inject(blockMirror.tags.blockEditor,
         blocklyOptions);
     // Configure Blockly
