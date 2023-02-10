@@ -3,30 +3,16 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Simple BlockMirror</title>
+    <title>BlockMirror</title>
 
     <!-- Pyodide -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
 
-<<<<<<< HEAD
-    <!-- Blockly -->
-=======
     <!-- Blockly  -->
->>>>>>> master
     <script src="../lib/blockly/blockly_compressed.js" type="text/javascript"></script>
     <script src="../lib/blockly/blocks_compressed.js" type="text/javascript"></script>
-    <script src="../lib/blockly/msg/js/en.js" type="text/javascript"></script>
+    <script src="../lib/blockly/msg/js/zh-hant.js" type="text/javascript"></script>
     <script src="../lib/blockly/python_compressed.js" type="text/javascript"></script>
-<<<<<<< HEAD
-
-    <!-- new Blockly 
-    <script src="../../blockly/blockly_compressed.js" type="text/javascript"></script>
-    <script src="../../blockly/blocks_compressed.js" type="text/javascript"></script>
-    <script src="../../blockly/msg/js/en.js" type="text/javascript"></script>
-    <script src="../../blockly/python_compressed.js" type="text/javascript"></script>
-    -->
-=======
->>>>>>> master
 
     <!-- CodeMirror -->
     <link rel="stylesheet" href="../lib/codemirror/codemirror.css">
@@ -50,6 +36,9 @@
         #menubar {
             top: 5px;
             height: 40px;
+            color: #fff;
+            text-decoration: none;
+            background: #058;
         }
 
         #code-frame {
@@ -129,16 +118,42 @@
         editor.addChangeListener(function (event) {
             console.log('Change! Better save:', event)
         });
+        /*
         editor.textEditor.codeMirror.on('keypress', (instance) => {
             instance.showHint();
         });
+        */
         editor.setCode('print("Hello World!")');
         run.addEventListener('click', async function () {
             output.innerHTML = '';
             await runPython(editor.getCode());
         });
+        //// editor autocomplete
+        const ignore = ['', '#', '!', '-', '=', '@', '$', '%', '&', '+', ';', '(', ')', '*'];
+        const ignoreToken = (text) => {
+            if (text && text[0]) {
+                for (const pre in ignore) {
+                    if (ignore[pre] === text[0]) {
+                        return true;
+                    }
+                }
+            } else {
+                return true;
+            }
+            return false;
+        };
+
+        editor.textEditor.codeMirror.on("change", function (editor, change) {
+            if (change.origin == "+input") {
+                var text = change.text;
+                if (!ignoreToken(text))
+                    setTimeout(function () { editor.execCommand("autocomplete"); }, 500);
+            }
+        });
+
+
     </script>
-    <script src="../lib/pyodide/lib_pyodide.js"></script>
+    <script async src="../lib/pyodide/lib_pyodide.js"></script>
 </body>
 
 </html>

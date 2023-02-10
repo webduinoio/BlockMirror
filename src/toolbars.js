@@ -78,6 +78,35 @@ BlockMirrorBlockEditor.prototype.TOOLBOXES = {
         TOOLBOX_CATEGORY.VARIABLES,
     ],
     //******************************************************
+    'wa': [
+        TOOLBOX_CATEGORY.VARIABLES,
+        TOOLBOX_CATEGORY.DECISIONS,
+        {name: "Iteration", colour: "CONTROL", blocks: [
+            'for ___ in ___: pass',
+            'while ___: pass',
+            'break',
+        ]},
+        {name: "Functions", colour: "FUNCTIONS", blocks: [
+            "def ___(___): pass",
+            "def ___(___: int)->str: pass",
+            "return ___",
+        ]},
+        TOOLBOX_CATEGORY.SEP,
+        TOOLBOX_CATEGORY.CALCULATIONS,
+        TOOLBOX_CATEGORY.INPUT,
+        TOOLBOX_CATEGORY.SEP,
+        TOOLBOX_CATEGORY.VALUES,
+        TOOLBOX_CATEGORY.CONVERSIONS,
+        {name: "Lists", colour: "LIST", blocks: [
+            "[0, 0, 0]",
+            "[___, ___, ___]",
+            "[]",
+            "___.append(___)",
+            "range(0, 10)"
+        ]},
+        TOOLBOX_CATEGORY.DICTIONARIES
+    ],
+    //******************************************************
     'normal': [
         TOOLBOX_CATEGORY.VARIABLES,
         TOOLBOX_CATEGORY.DECISIONS,

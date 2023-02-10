@@ -902,9 +902,18 @@ function BlockMirrorBlockEditor(blockMirror) {
     oneBasedIndex: false,
     readOnly: blockMirror.configuration.readOnly,
     scrollbars: true,
-    toolbox: this.makeToolbox()
+    toolbox: this.makeToolbox(),
+    media: '../lib/blockly/media/',
+    grid:
+    {
+      spacing: 25,
+      length: 3,
+      colour: '#ccc',
+      snap: true
+    },
   };
   this.workspace = Blockly.inject(blockMirror.tags.blockEditor, blocklyOptions); // Configure Blockly
+  //Blockly.setLocale('zh-hant');
 
   this.workspace.addChangeListener(this.changed.bind(this)); // Configure Blockly DIV
   //blockMirror.tags.blockEditor.style.resize = 'horizontal';
@@ -1321,9 +1330,9 @@ BlockMirrorTextToBlocks.prototype.convertSource = function (filename, python_sou
   var xml = document.createElement("xml"); // Attempt parsing - might fail!
 
   var parse,
-      ast = null,
-      symbol_table,
-      error;
+    ast = null,
+    symbol_table,
+    error;
   var badChunks = [];
   var originalSource = python_source;
   this.source = python_source.split("\n");
@@ -1475,12 +1484,12 @@ BlockMirrorTextToBlocks.prototype.convertBody = function (node, parent) {
   // Final result list
 
   var children = [],
-      // The complete set of peers
-  root = null,
-      // The top of the current peer
-  current = null,
-      // The bottom of the current peer
-  levelIndex = this.levelIndex;
+    // The complete set of peers
+    root = null,
+    // The top of the current peer
+    current = null,
+    // The bottom of the current peer
+    levelIndex = this.levelIndex;
 
   function addPeer(peer) {
     if (root == null) {
@@ -1514,15 +1523,15 @@ BlockMirrorTextToBlocks.prototype.convertBody = function (node, parent) {
   }
 
   var lineNumberInBody = 0,
-      lineNumberInProgram,
-      previousLineInProgram = null,
-      distance,
-      skipped_line,
-      commentCount,
-      previousHeight = null,
-      previousWasStatement = false,
-      visitedFirstLine = false,
-      wasFirstLine = false; // Iterate through each node
+    lineNumberInProgram,
+    previousLineInProgram = null,
+    distance,
+    skipped_line,
+    commentCount,
+    previousHeight = null,
+    previousWasStatement = false,
+    visitedFirstLine = false,
+    wasFirstLine = false; // Iterate through each node
 
   for (var i = 0; i < node.length; i++) {
     lineNumberInBody += 1;
@@ -2811,8 +2820,37 @@ BlockMirrorBlockEditor.prototype.TOOLBOXES = {
   }],
   //******************************************************
   'minimal': [// TODO: What should live in here?
-  TOOLBOX_CATEGORY.VARIABLES],
-  //******************************************************
+    TOOLBOX_CATEGORY.VARIABLES],
+    //******************************************************
+    'wa': [
+      TOOLBOX_CATEGORY.VARIABLES,
+      TOOLBOX_CATEGORY.DECISIONS,
+      {name: "Iteration", colour: "CONTROL", blocks: [
+          'for ___ in ___: pass',
+          'while ___: pass',
+          'break',
+      ]},
+      {name: "Functions", colour: "FUNCTIONS", blocks: [
+          "def ___(___): pass",
+          "def ___(___: int)->str: pass",
+          "return ___",
+      ]},
+      TOOLBOX_CATEGORY.SEP,
+      TOOLBOX_CATEGORY.CALCULATIONS,
+      TOOLBOX_CATEGORY.INPUT,
+      TOOLBOX_CATEGORY.SEP,
+      TOOLBOX_CATEGORY.VALUES,
+      TOOLBOX_CATEGORY.CONVERSIONS,
+      {name: "Lists", colour: "LIST", blocks: [
+          "[0, 0, 0]",
+          "[___, ___, ___]",
+          "[]",
+          "___.append(___)",
+          "range(0, 10)"
+      ]},
+      TOOLBOX_CATEGORY.DICTIONARIES
+  ],
+//******************************************************
   'normal': [TOOLBOX_CATEGORY.VARIABLES, TOOLBOX_CATEGORY.DECISIONS, {
     name: "Iteration",
     colour: "CONTROL",
@@ -2898,11 +2936,11 @@ BlockMirrorBlockEditor.prototype.TOOLBOXES = {
     colour: "PYTHON",
     blocks: ["# ", '"""\n"""']
   }
-  /*,
-  {name: "Weird Stuff", colour: "PYTHON", blocks: [
-    "delete ___",
-    "global ___"
-  ]}*/
+    /*,
+    {name: "Weird Stuff", colour: "PYTHON", blocks: [
+      "delete ___",
+      "global ___"
+    ]}*/
   ],
   //******************************************************
   'ct2': [{
@@ -6086,7 +6124,7 @@ BlockMirrorTextToBlocks.prototype['ast_Raise'] = function (node, parent) {
   var cause = node.cause;
   var values = {};
   var hasExc = false,
-      hasCause = false;
+    hasCause = false;
 
   if (exc !== null) {
     values['EXC'] = this.convert(exc, node);
@@ -6358,8 +6396,8 @@ BlockMirrorTextToBlocks.prototype.addSliceDim = function (slice, i, values, muta
     mutations.push("I");
   } else if (sliceKind === "Slice") {
     var L = "0",
-        U = "0",
-        S = "0";
+      U = "0",
+      S = "0";
 
     if (slice.lower !== null) {
       values['SLICELOWER' + i] = this.convert(slice.lower, node);
@@ -6822,10 +6860,10 @@ BlockMirrorTextToBlocks.BLOCKS.push({
 
 [['Parameter', 'Parameter', '', false, false], ['ParameterType', 'Parameter with type', '', true, false], ['ParameterDefault', 'Parameter with default value', '', false, true], ['ParameterDefaultType', 'Parameter with type and default value', '', true, true], ['ParameterVararg', 'Variable length parameter', '*', false, false], ['ParameterVarargType', 'Variable length parameter with type', '*', true, false], ['ParameterKwarg', 'Keyworded Variable length parameter', '**', false], ['ParameterKwargType', 'Keyworded Variable length parameter with type', '**', true, false]].forEach(function (parameterTypeTuple) {
   var parameterType = parameterTypeTuple[0],
-      parameterDescription = parameterTypeTuple[1],
-      parameterPrefix = parameterTypeTuple[2],
-      parameterTyped = parameterTypeTuple[3],
-      parameterDefault = parameterTypeTuple[4];
+    parameterDescription = parameterTypeTuple[1],
+    parameterPrefix = parameterTypeTuple[2],
+    parameterTyped = parameterTypeTuple[3],
+    parameterDefault = parameterTypeTuple[4];
   BlockMirrorTextToBlocks.BLOCKS.push({
     "type": "ast_FunctionMutant" + parameterType,
     "message0": parameterDescription,
@@ -6945,9 +6983,9 @@ Blockly.Blocks['ast_FunctionDef'] = {
     var position = 1;
     [['DECORATOR', 'decoratorsCount_', null, 'decorated by'], ['PARAMETER', 'parametersCount_', 'Parameter', 'parameters:']].forEach(function (childTypeTuple) {
       var childTypeName = childTypeTuple[0],
-          countVariable = childTypeTuple[1],
-          inputCheck = childTypeTuple[2],
-          childTypeMessage = childTypeTuple[3];
+        countVariable = childTypeTuple[1],
+        inputCheck = childTypeTuple[2],
+        childTypeMessage = childTypeTuple[3];
 
       for (var i = 0; i < block[countVariable]; i++) {
         if (!block.getInput(childTypeName + i)) {
@@ -7162,11 +7200,11 @@ BlockMirrorTextToBlocks.prototype.parseArg = function (arg, type, lineno, values
 
 BlockMirrorTextToBlocks.prototype.parseArgs = function (args, values, lineno, node) {
   var positional = args.args,
-      vararg = args.vararg,
-      kwonlyargs = args.kwonlyargs,
-      kwarg = args.kwarg,
-      defaults = args.defaults,
-      kw_defaults = args.kw_defaults;
+    vararg = args.vararg,
+    kwonlyargs = args.kwonlyargs,
+    kwarg = args.kwarg,
+    defaults = args.defaults,
+    kw_defaults = args.kw_defaults;
   var totalArgs = 0; // args (positional)
 
   if (positional !== null) {
