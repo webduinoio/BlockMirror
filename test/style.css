@@ -18,13 +18,12 @@ body {
 #code-frame {
     float: left;
     width: 75%;
-    height: 50vh;
     margin: 0;
 }
 
 #output-frame {
     float: left;
-    width: 25%;
+    width: calc(25% - 3px);
     height: 50vh;
 }
 
@@ -38,6 +37,7 @@ body {
 }
 
 #output-title {
+    width: 100%;
     font-size: 20px;
     height: 32px;
     line-height: 32px;
@@ -52,7 +52,7 @@ body {
     /* 默认不显示 */
     position: fixed;
     /* 固定定位 */
-    z-index: 20;
+    z-index: 70;
     /* 置于页面最上层 */
     left: 0;
     top: 0;
@@ -121,4 +121,13 @@ textarea {
     background-color: #f8f8f8;
     font-size: 16px;
     resize: none;
+}
+
+.splitter {
+    float: left;
+    width: 3px;
+    background-color: #9f9f9f;
+    cursor: col-resize;
+    float: left;
+    height: calc(100vh - 40px)
 }
