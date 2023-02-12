@@ -1,8 +1,11 @@
 let codeFrame = document.getElementById('code-frame');
+let eleBlockmirror = document.getElementById('blockmirror-editor');
+let parentElement = eleBlockmirror.parentElement;
 var editor = new BlockMirror({
-    'container': document.getElementById('blockmirror-editor'),
-    'height': codeFrame.scrollHeight,
-    'toolbox': 'wa', // empty, minimal , ct , normal , full
+    'container': eleBlockmirror,
+    'height': parentElement.scrollHeight,
+    'toolbox': 'wa', // empty, minimal , ct , normal , full,
+    'viewMode': 'text',
 });
 editor.addChangeListener(function (event) {
     console.log('Change! Better save:', event)

@@ -47,7 +47,6 @@ export class dialog extends LitElement {
   }
 
   firstUpdated() {
-    // 获取按钮和弹出窗口
     var btn = this.renderRoot.getElementById("help");
     var modal = this.renderRoot.getElementById("myModal");
     var sendBtn = this.renderRoot.getElementById("sendBtn");

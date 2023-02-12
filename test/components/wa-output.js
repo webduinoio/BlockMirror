@@ -11,15 +11,15 @@ export class Output extends LitElement {
         height: 32px;
         line-height: 32px;
         color: #Fefefe;
-        padding-left: 10px;
         background-color: #707070;
     }
     #output-console {
-        height: calc(100% - 32px);
-        width: 100%;
+        font-size: 20px;
+        height: calc(100% - 52px);
+        width: calc(100% - 20px);
         color: #Fefefe;
         background-color: #303030;
-        padding-left: 10px;
+        padding: 10px;
     }
   `];
 
