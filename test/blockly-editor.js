@@ -5,11 +5,19 @@ var editor = new BlockMirror({
     'container': eleBlockmirror,
     'height': parentElement.scrollHeight,
     'toolbox': 'wa', // empty, minimal , ct , normal , full,
-    'viewMode': 'text',
+    'viewMode': 'block', // text , split ,block
 });
 editor.addChangeListener(function (event) {
     console.log('Change! Better save:', event)
 });
+
+new ResizeObserver(function () {
+    editor.blockEditor.blockMirror.configuration.height = parentElement.offsetHeight;
+    editor.textEditor.blockMirror.configuration.height = parentElement.offsetHeight;
+    editor.textEditor.resizeResponsively();
+    editor.refresh();
+}).observe(parentElement);
+
 editor.setCode('print("Hello World!")');
 //// editor autocomplete
 const ignore = ['', '#', '!', '-', '=', '@', '$', '%', '&', '+', ';', '(', ')', '*'];
