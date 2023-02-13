@@ -21,6 +21,7 @@ export class Output extends LitElement {
         color: #Fefefe;
         background-color: #303030;
         padding: 10px;
+        overflow: scroll;
     }
   `];
 
