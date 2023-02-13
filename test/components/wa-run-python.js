@@ -35,27 +35,29 @@ export class RunPython extends LitElement {
   `];
 
     async firstUpdated() {
+        let self = this;
+        self.content = "";
         const run = this.renderRoot.querySelector("#run");
         const output = document.getElementById(this.console);
-        function stdin_func() {
 
+        async function stdin_func() {
+            await new Promise(r => setTimeout(r, 211000));
+            return "33";
         }
 
         function stdout_func(msg) {
             output.innerHTML = output.innerHTML + msg + '<br>';
+            console.log(">>>", msg);
         }
 
         function stderr_func(msg) {
             output.innerHTML = output.innerHTML + msg + '<br>';
+            console.log(">>>", msg);
         }
 
-        async function runPython(code) {
-            await pyodide.runPython(code);
-        }
-
-        run.addEventListener('click', async function () {
+        run.addEventListener('click', function () {
             output.innerHTML = '';
-            await runPython(editor.getCode());
+            pyodide.runPython(editor.getCode());
         });
 
         let pyodide;
