@@ -10,6 +10,28 @@ export class RunPython extends LitElement {
     }
 
     static styles = [css`
+    svg {
+        fill: #eee;
+        width: 24px;
+        height: 24px;
+    }  
+    .btn {
+        transition: all 0.5s ease;
+        cursor: pointer;
+        color: #eee;
+        float:left;
+        font-size: 16px;
+        display: flex;
+        align-items: center; 
+        width:70px;
+    }
+    .btn:hover {
+        transform: translateY(-3px);
+        color: #fff;
+    }
+    .btn svg + span {
+        margin-left: 1px;
+      }     
   `];
 
     async firstUpdated() {
@@ -49,7 +71,15 @@ export class RunPython extends LitElement {
     }
 
     render() {
-        return html`<button id='run' disabled="enable">Run</button>`;
+        return html`
+        <div id='run' class='btn'>
+        <svg viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            <path d="M0 0h24v24H0z" fill="none" />
+        </svg>
+        <span>執行</span>
+        </div>
+        `;
     }
 }
 customElements.define('wa-run-python', RunPython);

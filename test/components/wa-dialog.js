@@ -53,7 +53,6 @@ export class dialog extends LitElement {
     var closeBtn = this.renderRoot.getElementById("closeBtn");
     var sendText = this.renderRoot.getElementById("sendText");
     this.respText = this.renderRoot.getElementById("respText");
-    btn.innerHTML = this.innerHTML;
 
     sendText.addEventListener("keydown", function (e) {
       e.stopPropagation();
@@ -93,20 +92,19 @@ export class dialog extends LitElement {
       background-color: rgba(0, 0, 0, 0.4);
   }
   
-  /* 窗口樣式 */
   .modal-content {
       position: relative;
       background-color: #fefefe;
       color: #333;
       margin: auto;
-      padding: 0;
+      padding: 3px;
       top: 100px;
       border: 1px solid #888;
       width: 640px;
       height: 640px;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
       animation-name: animatetop;
-      animation-duration: 0.4s
+      animation-duration: 0.4s;
   }
 
   .send-btn:disabled,
@@ -150,10 +148,15 @@ export class dialog extends LitElement {
       to { opacity: 1 }
   }
 
+  #title {
+    font-size: 18px;
+    padding: 5px;
+  }
+
   textarea {
       width: 100%;
-      height: 41%;
-      padding: 6px;
+      height: 40%;
+      padding: 3px;
       box-sizing: border-box;
       border: 2px solid #ccc;
       border-radius: 4px;
@@ -161,20 +164,50 @@ export class dialog extends LitElement {
       font-size: 16px;
       resize: none;
   }    
-  `];
+  svg {
+      fill: #eee;
+      width: 24px;
+      height: 24px;
+  }  
+  .btn {
+      transition: all 0.5s ease;
+      cursor: pointer;
+      color: #eee;
+      float:left;
+      font-size: 16px;
+      display: flex;
+      align-items: center; 
+      width:70px;
+  }
+  .btn:hover {
+      transform: translateY(-3px);
+      color: #fff;
+  }
+  .btn svg + span {
+      margin-left: 1px;
+    }
+    `
+  ];
 
   render() {
     return html`
-<button id="help"></button>
-<div id="myModal" class="modal">
-  <div class="modal-content">
-      您好，我是 Python 小助手，可以問我程式問題呦
-      <textarea id='sendText'>你正常嗎</textarea>
-      <input id="sendBtn" class='send-btn' type='button' value='送出'>
-      <textarea id='respText'></textarea>
-      <button id="closeBtn" class='close-btn'>關閉</button>
-  </div>
-</div>
+      <div id='help' class='btn'>
+        <svg viewBox="0 0 24 24">
+            <path d="M12,2C6.477,2,2,6.477,2,12c0,5.523,4.477,10,10,10s10-4.477,10-10C22,6.477,17.523,2,12,2z M13,17h-2v-6h2V17z M13,9h-2V7h2V9z" />
+            <path d="M0,0h24v24H0V0z" fill="none" />
+        </svg>
+        <span><slot></slot></span>
+      </div>
+
+      <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div id="title">您好，我是 Python 小助手，可以問我程式問題呦</div>
+            <textarea id='sendText'></textarea>
+            <input id="sendBtn" class='send-btn' type='button' value='送出'>
+            <textarea id='respText'></textarea>
+            <button id="closeBtn" class='close-btn'>關閉</button>
+        </div>
+      </div>
     `;
   }
 }
