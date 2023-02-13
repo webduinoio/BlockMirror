@@ -28,6 +28,11 @@ export class Splitter extends LitElement {
             startX = e.clientX;
             startWidth = codeFrame.offsetWidth;
         });
+        splitter.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startWidth = codeFrame.offsetWidth;
+        });
 
         document.addEventListener("mousemove", (e) => {
             if (!isDragging) return;
@@ -37,7 +42,18 @@ export class Splitter extends LitElement {
             editor.blockEditor.resized();
         });
 
+        document.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            const diffX = e.clientX - startX;
+            codeFrame.style.width = startWidth + diffX + "px";
+            outputFrame.style.width = `calc(100% - ${codeFrame.offsetWidth + 3}px)`;
+            editor.blockEditor.resized();
+        });
+
         document.addEventListener("mouseup", (e) => {
+            isDragging = false;
+        });
+        document.addEventListener("touchend", (e) => {
             isDragging = false;
         });
     }

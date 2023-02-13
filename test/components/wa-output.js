@@ -6,12 +6,13 @@ export class Output extends LitElement {
 
     static styles = [css`
     #output-title {
-        width: 100%;
+        width: calc(100% - 10px);
         font-size: 20px;
         height: 32px;
         line-height: 32px;
         color: #Fefefe;
         background-color: #707070;
+        padding-left: 10px;
     }
     #output-console {
         font-size: 20px;

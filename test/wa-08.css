@@ -8,14 +8,14 @@ body {
 
 #code-frame {
     float: left;
-    width: 30%;
+    width: 40%;
     margin: 0;
     height: calc(100vh - 40px)
 }
 
 #output-frame {
     float: left;
-    width: calc(70% - 3px);
+    width: calc(60% - 3px);
     height: calc(100vh - 40px)
 }
 
