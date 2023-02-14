@@ -16,7 +16,7 @@ body {
 #output-frame {
     float: left;
     width: calc(60% - 3px);
-    height: calc(100vh - 40px)
+    height: calc(100vh - 43px)
 }
 
 .CodeMirror {
