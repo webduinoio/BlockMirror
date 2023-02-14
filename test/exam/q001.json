@@ -4,5 +4,6 @@
     "theinput": "輸入僅有一行，其中包含一個西元年份 y (1912 ≤ y ≤ 2147483647)。",
     "theoutput": "輸出所算出的民國年份。",
     "sampleinput": "2021",
-    "sampleoutput": "110"
+    "sampleoutput": "110",
+    "samplecode": "year = input()\nyear = int(year)\nyear = year - 1911\nprint(year)\n"
 }

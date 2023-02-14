@@ -47,11 +47,13 @@ editor.addChangeListener(function (event) {
 });
 
 // set python code
+/*
 editor.setCode(`year = input()
 year = int(year)
 year = year - 1911
 print(year)
 `);
+*/
 
 
 class Main {
