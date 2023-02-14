@@ -61,6 +61,11 @@ export class Output extends LitElement {
         this.output.innerHTML = this.output.innerHTML + msg + "<br>";
     }
 
+    showErr(msg) {
+        this.output.innerHTML = this.output.innerHTML +
+            "<span style='color:red'>" + msg + "</span><br>";
+    }
+
     firstUpdated() {
         //*
         this.output = this.renderRoot.getElementById("output-console");
