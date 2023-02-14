@@ -13,6 +13,7 @@ export class Output extends LitElement {
         color: #Fefefe;
         background-color: #707070;
         padding-left: 10px;
+        user-select: none;
     }
     #output-console {
         font-size: 20px;
@@ -64,6 +65,10 @@ export class Output extends LitElement {
     showErr(msg) {
         this.output.innerHTML = this.output.innerHTML +
             "<span style='color:red'>" + msg + "</span><br>";
+    }
+
+    getMsg() {
+        return this.output.innerHTML;
     }
 
     firstUpdated() {

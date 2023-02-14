@@ -34,6 +34,23 @@ export class RunPython extends LitElement {
       }     
   `];
 
+    async runPythonCode(code) {
+        try {
+            await this.pyodide.runPythonAsync(code);
+            return null;
+        } catch (err) {
+            if (err instanceof pyodide.PythonError) {
+                var errMsg = err.message.split('\n').slice(-3).join(' ');
+                var result = errMsg.replace(/(line )(\d+)/, function (match, p1, p2) {
+                    return p1 + (parseInt(p2) - 2);
+                });
+                return result;
+            } else {
+                throw err;
+            }
+        }
+    }
+
     async firstUpdated() {
         let self = this;
         self.content = "";
@@ -59,27 +76,10 @@ export class RunPython extends LitElement {
                 code.replace(/input\(/g, 'await js.input(');
         }
 
-        async function runPythonCode(code) {
-            try {
-                await pyodide.runPythonAsync(code);
-                return null;
-            } catch (err) {
-                if (err instanceof pyodide.PythonError) {
-                    var errMsg = err.message.split('\n').slice(-3).join(' ');
-                    var result = errMsg.replace(/(line )(\d+)/, function (match, p1, p2) {
-                        return p1 + (parseInt(p2) - 2);
-                    });
-                    return result;
-                } else {
-                    throw err;
-                }
-            }
-        }
-
         run.addEventListener('click', async function () {
             output.cls();
             var newCode = convertCode(editor.getCode());
-            runPythonCode(newCode).then(result => {
+            self.runPythonCode(newCode).then(result => {
                 if (result != null) {
                     result = result.substring(result.indexOf(',') + 1);
                     output.showErr(result);
@@ -109,9 +109,35 @@ export class RunPython extends LitElement {
         }
 
         window.pyodide = pyodide;
+        this.pyodide = pyodide;
+        this.output = output;
         // Pyodide is now ready to use...
         console.log("pyodide ready !");
         run.removeAttribute('disabled');
+    }
+
+    frontTest() {
+        var sampleinput = window.examJson['sampleinput'];
+        var sampleoutput = window.examJson['sampleoutput'];
+        this.output.cls();
+        var newCode = editor.getCode();
+        this.pyodide.setStdin({
+            stdin: function () {
+                return sampleinput;
+            }
+        })
+        this.runPythonCode(newCode).then(result => {
+            if (result != null) {
+                result = result.substring(result.indexOf(',') + 1);
+                output.showErr(result);
+            }
+            var outputData = this.output.getMsg().replace(/<br>/g, '');
+            if (sampleoutput == outputData) {
+                alert('測試成功');
+            } else {
+                alert('測試失敗');
+            }
+        });
     }
 
     render() {
