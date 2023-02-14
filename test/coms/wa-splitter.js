@@ -18,7 +18,6 @@ export class Splitter extends LitElement {
         width: 3px;
         background-color: #9f9f9f;
         cursor: col-resize;
-        float: left;
         height: calc(100vh - 40px)
     }`]
 

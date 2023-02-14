@@ -8,6 +8,11 @@ import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/al
  * Date: 2022/02
  */
 export class Exam extends LitElement {
+
+    static properties = {
+        path: {},
+    };
+
     constructor() {
         super();
     }
@@ -19,9 +24,11 @@ export class Exam extends LitElement {
     getInfo() {
         return this.info;
     }
-    
+
     firstUpdated() {
         var self = this;
+        if (this.path == '' || typeof (this.path) == 'undefined')
+            this.path = './exam/';
         function prepareExam(data) {
             for (var i in data) {
                 let showData = data[i];
@@ -32,7 +39,7 @@ export class Exam extends LitElement {
         }
         var examFile = location.hash;
         examFile = examFile == '' ? 'q001.json' : examFile.substring(1);
-        fetch('exam/' + examFile)
+        fetch(this.path + examFile)
             .then(response => response.json())
             .then(data => prepareExam(data))
             .catch(error => console.error(error));

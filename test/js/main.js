@@ -3,7 +3,7 @@ let parentElement = eleBlockmirror.parentElement;
 
 var editor = new BlockMirror({
     'container': eleBlockmirror,
-    'height':  parentElement,
+    'height': parentElement,
     'toolbox': 'wa', // empty, minimal , ct , normal , full,
     'viewMode': 'text', // text , split ,block
 });
@@ -17,6 +17,7 @@ new ResizeObserver(function () {
 }).observe(parentElement);
 
 // editor autocomplete
+/*
 const ignore = ['', '#', '!', '-', '=', '@', '$', '%', '&', '+', ';', '(', ')', '*'];
 const ignoreToken = (text) => {
     if (text && text[0]) {
@@ -38,9 +39,11 @@ editor.textEditor.codeMirror.on("change", function (editor, change) {
             setTimeout(function () { editor.execCommand("autocomplete"); }, 500);
     }
 });
+//*/
 
 editor.addChangeListener(function (event) {
-    console.log('Change! Better save:', event)
+    console.log('Change! Better save:', event.value);
+    // lint custom ref: https://juejin.cn/post/7127282061211074573
 });
 
 // set python code
