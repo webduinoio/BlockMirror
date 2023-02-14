@@ -25,8 +25,25 @@ export class Output extends LitElement {
     }
   `];
 
+    scrollBottom() {
+        //this.output.scrollTop = this.output.scrollHeight;
+        const distance = this.output.scrollHeight - this.output.scrollTop;
+        const speed = distance / 300; // 每毫秒滾動的距離
+        const interval = 10; // 每 10 毫秒滾動一次
+        let currentPosition = this.output.scrollTop;
+        var self = this;
+        const scroll = setInterval(function() {
+          currentPosition += speed * interval;
+          self.output.scrollTop = currentPosition;
+          if (currentPosition >= self.output.scrollHeight) {
+            clearInterval(scroll);
+          }
+        }, interval);
+
+    }
+
     firstUpdated() {
-        //const splitter = this.renderRoot.querySelector(".splitter");
+        this.output = this.renderRoot.getElementById("output-console");
     }
 
     render() {

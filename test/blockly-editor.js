@@ -5,7 +5,7 @@ var editor = new BlockMirror({
     'container': eleBlockmirror,
     'height': parentElement.scrollHeight,
     'toolbox': 'wa', // empty, minimal , ct , normal , full,
-    'viewMode': 'block', // text , split ,block
+    'viewMode': 'text', // text , split ,block
 });
 editor.addChangeListener(function (event) {
     console.log('Change! Better save:', event)

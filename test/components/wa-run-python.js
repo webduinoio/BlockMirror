@@ -40,33 +40,48 @@ export class RunPython extends LitElement {
         const run = this.renderRoot.querySelector("#run");
         const output = document.getElementById(this.console);
 
-        async function stdin_func() {
-            await new Promise(r => setTimeout(r, 211000));
-            return "33";
+        window.input = async function (msg) {
+            return new Promise((resolve, reject) => {
+                setTimeout(function () {
+                    var rtn = prompt();
+                    resolve(rtn);
+                }, 500);
+            });
         }
 
         function stdout_func(msg) {
             output.innerHTML = output.innerHTML + msg + '<br>';
-            console.log(">>>", msg);
+            output.scrollBottom();
         }
 
         function stderr_func(msg) {
             output.innerHTML = output.innerHTML + msg + '<br>';
-            console.log(">>>", msg);
+            output.scrollBottom();
+        }
+
+        function convertCode(code) {
+            var imp = 'import js\nimport asyncio\n';
+            return imp +
+                code.replace(/input\(/g, 'await js.input(');
         }
 
         run.addEventListener('click', function () {
             output.innerHTML = '';
-            pyodide.runPython(editor.getCode());
+            var newCode = convertCode(editor.getCode());
+            //console.log(newCode);
+            pyodide.runPythonAsync(newCode);
+            //pyodide.runPython(editor.getCode());
         });
 
         let pyodide;
         console.log("init pyodide....");
+
         pyodide = await loadPyodide({
             //stdin: stdin_func,
             stdout: stdout_func,
             stderr: stderr_func,
         });
+
         // Pyodide is now ready to use...
         console.log("pyodide ready !");
         run.removeAttribute('disabled');
