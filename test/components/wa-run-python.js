@@ -11,14 +11,14 @@ export class RunPython extends LitElement {
 
     static styles = [css`
     svg {
-        fill: #eee;
+        fill: #990;
         width: 24px;
         height: 24px;
     }  
     .btn {
         transition: all 0.5s ease;
         cursor: pointer;
-        color: #eee;
+        color: #990;
         float:left;
         font-size: 16px;
         display: flex;
@@ -38,16 +38,8 @@ export class RunPython extends LitElement {
         let self = this;
         self.content = "";
         const run = this.renderRoot.querySelector("#run");
+        const icon = this.renderRoot.querySelector("#icon");
         const output = document.getElementById(this.console);
-
-        window.input = async function (msg) {
-            return new Promise((resolve, reject) => {
-                setTimeout(function () {
-                    var rtn = prompt();
-                    resolve(rtn);
-                }, 500);
-            });
-        }
 
         function stdout_func(msg) {
             //console.log("stdout:", msg);
@@ -67,11 +59,32 @@ export class RunPython extends LitElement {
                 code.replace(/input\(/g, 'await js.input(');
         }
 
-        run.addEventListener('click', function () {
+        async function runPythonCode(code) {
+            try {
+                await pyodide.runPythonAsync(code);
+                return null;
+            } catch (err) {
+                if (err instanceof pyodide.PythonError) {
+                    var errMsg = err.message.split('\n').slice(-3).join(' ');
+                    var result = errMsg.replace(/(line )(\d+)/, function (match, p1, p2) {
+                        return p1 + (parseInt(p2) - 2);
+                    });
+                    return result;
+                } else {
+                    throw err;
+                }
+            }
+        }
+
+        run.addEventListener('click', async function () {
             output.cls();
             var newCode = convertCode(editor.getCode());
-            //console.log(newCode);
-            pyodide.runPythonAsync(newCode);
+            runPythonCode(newCode).then(result => {
+                if (result != null) {
+                    result = result.substring(result.indexOf(',') + 1);
+                    output.showErr(result);
+                }
+            });
             //pyodide.runPython(editor.getCode());
         });
 
@@ -83,7 +96,19 @@ export class RunPython extends LitElement {
             stdout: stdout_func,
             stderr: stderr_func,
         });
+        run.style['color'] = '#eee';
+        icon.style['fill'] = '#eee';
 
+        window.input = async function (msg) {
+            return new Promise((resolve, reject) => {
+                setTimeout(function () {
+                    var rtn = prompt();
+                    resolve(rtn);
+                }, 500);
+            });
+        }
+
+        window.pyodide = pyodide;
         // Pyodide is now ready to use...
         console.log("pyodide ready !");
         run.removeAttribute('disabled');
@@ -92,7 +117,7 @@ export class RunPython extends LitElement {
     render() {
         return html`
         <div id='run' class='btn'>
-        <svg viewBox="0 0 24 24">
+        <svg id='icon' viewBox="0 0 24 24">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
             <path d="M0 0h24v24H0z" fill="none" />
         </svg>
