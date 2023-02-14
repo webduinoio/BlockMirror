@@ -1,10 +1,16 @@
 import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js'
 
-export class dialog extends LitElement {
+/**
+ * filename：wa-ai-chat-dialog.js
+ * descript：透過 mqtt 使用 wabot聊天機器人 (串接 OpenAI API)
+ * Author: Marty
+ * Date: 2022/02
+ */
+export class AI_Assistant extends LitElement {
   static properties = {
     name: {},
   };
-
+f
   constructor() {
     super();
     this.init();
@@ -212,4 +218,4 @@ export class dialog extends LitElement {
   }
 }
 
-customElements.define('wa-dialog', dialog);
+customElements.define('wa-ai-chat-dialog', AI_Assistant);

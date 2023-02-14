@@ -49,3 +49,10 @@ year = int(year)
 year = year - 1911
 print(year)
 `);
+
+
+class Main {
+
+}
+
+window.Main = Main;

@@ -2,11 +2,10 @@ function preareExam(data) {
     for (var i in data) {
         console.log(data[i], i);
         let showData = data[i];
-        if (i == 'content') i = 'exam-content';
         var ele = document.getElementById(i);
         ele.innerHTML = showData;
     }
-    window.examJson = data;
+    Main.examJson = data;
 }
 
 function frontTest() {

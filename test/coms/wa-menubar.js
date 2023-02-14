@@ -1,4 +1,11 @@
 import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js'
+
+/**
+ * filename：wa-menubar.js
+ * descript：工具選單 (包含Logo、按鈕)
+ * Author: Marty
+ * Date: 2022/02
+ */
 export class MenuBar extends LitElement {
 
     constructor() {
@@ -57,7 +64,7 @@ export class MenuBar extends LitElement {
 
     render() {
         return html`
-        <div id='menubar' data-toggle="buttons">
+        <div id='menubar'>
         <div style='float:left;padding:4px;position:absolute'>
             <img width='36' height='36' src='https://webbit.webduino.io/blockly/media/logo3.png'>
         </div>

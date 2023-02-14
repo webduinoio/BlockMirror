@@ -1,4 +1,12 @@
 import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js'
+
+/**
+ * filename：wa-run-python.js
+ * descript：按下此按鈕，可以使用 pyodide 套件執行 python 程式
+ * associate: editor , wa-output , Main
+ * Author: Marty
+ * Date: 2022/02
+ */
 export class RunPython extends LitElement {
 
     static properties = {
@@ -39,7 +47,7 @@ export class RunPython extends LitElement {
             await this.pyodide.runPythonAsync(code);
             return null;
         } catch (err) {
-            if (err instanceof pyodide.PythonError) {
+            if (err instanceof this.pyodide.PythonError) {
                 var errMsg = err.message.split('\n').slice(-3).join(' ');
                 var result = errMsg.replace(/(line )(\d+)/, function (match, p1, p2) {
                     return p1 + (parseInt(p2) - 2);
@@ -58,13 +66,11 @@ export class RunPython extends LitElement {
         const output = document.getElementById(this.console);
 
         function stdout_func(msg) {
-            //console.log("stdout:", msg);
             output.show(msg);
             output.scrollBottom();
         }
 
         function stderr_func(msg) {
-            //console.log("stderr:", msg);
             output.show(msg);
             output.scrollBottom();
         }
@@ -72,7 +78,7 @@ export class RunPython extends LitElement {
         function convertCode(code) {
             var imp = 'import js\nimport asyncio\n';
             return imp +
-                code.replace(/input\(/g, 'await js.input(');
+                code.replace(/input\(/g, 'await js.Main.input(');
         }
 
         run.addEventListener('click', async function () {
@@ -89,7 +95,6 @@ export class RunPython extends LitElement {
 
         let pyodide;
         console.log("init pyodide....");
-
         pyodide = await loadPyodide({
             //stdin: stdin_func,
             stdout: stdout_func,
@@ -98,7 +103,7 @@ export class RunPython extends LitElement {
         run.style['color'] = '#eee';
         icon.style['fill'] = '#eee';
 
-        window.input = async function (msg) {
+        Main.input = async function (msg) {
             return new Promise((resolve, reject) => {
                 setTimeout(function () {
                     var rtn = prompt();
@@ -106,8 +111,6 @@ export class RunPython extends LitElement {
                 }, 500);
             });
         }
-
-        window.pyodide = pyodide;
         this.pyodide = pyodide;
         this.output = output;
         // Pyodide is now ready to use...
@@ -116,8 +119,8 @@ export class RunPython extends LitElement {
     }
 
     frontTest() {
-        var sampleinput = window.examJson['sampleinput'];
-        var sampleoutput = window.examJson['sampleoutput'];
+        var sampleinput = Main.examJson['sampleinput'];
+        var sampleoutput = Main.examJson['sampleoutput'];
         this.output.cls();
         var newCode = editor.getCode();
         this.pyodide.setStdin({

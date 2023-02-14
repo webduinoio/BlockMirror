@@ -10,12 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/mqtt@2.18.3/dist/mqtt.min.js"></script>
     <!-- Lit elements -->
     <script type="module" src="https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js"></script>
-    <script type="module" src="components/wa-dialog.js"></script>
-    <script type="module" src="components/wa-output.js"></script>
-    <script type="module" src="components/wa-splitter.js"></script>
-    <script type="module" src="components/wa-menubar.js"></script>
-    <script type="module" src="components/wa-run-python.js"></script>
-    <script type="module" src="components/wa-split-v.js"></script>
+    <script type="module" src="coms/wa-ai-chat-dialog.js"></script>
+    <script type="module" src="coms/wa-output.js"></script>
+    <script type="module" src="coms/wa-splitter.js"></script>
+    <script type="module" src="coms/wa-menubar.js"></script>
+    <script type="module" src="coms/wa-run-python.js"></script>
+    <script type="module" src="coms/wa-split-v.js"></script>
 
     <!-- Blockly  -->
     <script src="../lib/blockly/blockly_compressed.js" type="text/javascript"></script>
@@ -45,7 +45,7 @@
 <body>
     <wa-menubar id="menubar">
         <wa-run-python id='runPython' console="output"></wa-run-python>
-        <wa-dialog>詢問</wa-dialog>
+        <wa-ai-chat-dialog>詢問</wa-ai-chat-dialog>
     </wa-menubar>
 
     <div id="app-content">
@@ -54,7 +54,7 @@
                 <h3>題目</h3>
                 <div id="title"></div>
                 <h4>內容</h4>
-                <div id="exam-content"></div>
+                <div id="content"></div>
                 <h4>輸入說明</h4>
                 <div id="theinput"></div>
                 <h4>輸出說明</h4>

@@ -1,5 +1,11 @@
 import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js'
 
+/**
+ * filename：wa-split-v.js
+ * descript：水平分割卷軸，可以讓這卷軸上下的div區塊可以改變顯示區塊大小
+ * Author: Marty
+ * Date: 2022/02
+ */
 export class SplitV extends LitElement {
 
     constructor() {

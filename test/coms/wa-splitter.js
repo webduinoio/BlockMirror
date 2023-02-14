@@ -1,5 +1,11 @@
 import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js'
 
+/**
+ * filename：wa-splitter.js
+ * descript：垂直分割卷軸，可以讓這卷軸左右的div區塊，可以改變顯示區塊大小
+ * Author: Marty
+ * Date: 2022/02
+ */
 export class Splitter extends LitElement {
 
     constructor() {
@@ -21,8 +27,10 @@ export class Splitter extends LitElement {
         let startX, startWidth;
 
         const splitter = this.renderRoot.querySelector(".splitter");
-        const leftFrame = document.querySelector("#left-frame");
-        const rightFrame = document.querySelector("#right-frame");
+        let ele = this.parentElement;
+        let leftFrame = ele.children[0];
+        let rightFrame = ele.children[2];
+
         splitter.addEventListener("mousedown", (e) => {
             isDragging = true;
             startX = e.clientX;

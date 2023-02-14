@@ -1,4 +1,11 @@
 import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js'
+
+/**
+ * filename：wa-output.js
+ * descript：程式輸出畫面 (Python終端輸出)，包含右上角一個清除畫面的按鈕，顯示 python print 資料
+ * Author: Marty
+ * Date: 2022/02
+ */
 export class Output extends LitElement {
     constructor() {
         super();
@@ -30,7 +37,7 @@ export class Output extends LitElement {
         height: 24px;
     }
     #clear {
-        transition: transform 0.3s ease-out; /* 添加過渡效果，0.3s 為過渡時間，ease-out 為過渡效果 */
+        transition: transform 0.3s ease-out;
     }      
     #clear:hover {
         transform: rotate(45deg);
@@ -38,10 +45,9 @@ export class Output extends LitElement {
   `];
 
     scrollBottom() {
-        //this.output.scrollTop = this.output.scrollHeight;
         const distance = this.output.scrollHeight - this.output.scrollTop;
         const speed = distance / 300; // 每毫秒滾動的距離
-        const interval = 10; // 每 10 毫秒滾動一次
+        const interval = 10;
         let currentPosition = this.output.scrollTop;
         var self = this;
         const scroll = setInterval(function () {
