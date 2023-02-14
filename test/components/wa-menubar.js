@@ -58,8 +58,19 @@ export class MenuBar extends LitElement {
     render() {
         return html`
         <div id='menubar' data-toggle="buttons">
+        <div style='float:left;padding:4px;position:absolute'>
+            <img width='36' height='36' src='https://webbit.webduino.io/blockly/media/logo3.png'>
+        </div>
         <div style="padding-top: 10px;">
             <div class="toolMenu">
+                <div class='btn' onclick="editor.setMode('text');">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
+                        <path d="M0 0h24v24H0z" fill="none" />
+                    </svg>
+                    <span>程式</span>
+                </div>
                 <div class='btn' onclick="editor.setMode('block');">
                     <svg viewBox="0 0 24 24">
                         <rect x="3" y="3" width="6" height="6" />
@@ -69,14 +80,6 @@ export class MenuBar extends LitElement {
                         <path d="M0 0h24v24H0z" fill="none" />
                     </svg>
                     <span>積木</span>
-                </div>
-                <div class='btn' onclick="editor.setMode('text');">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-                        <path d="M0 0h24v24H0z" fill="none" />
-                    </svg>
-                    <span>程式</span>
                 </div>
                 <div class='btn' onclick="editor.setMode('split');">
                     <svg viewBox="0 0 24 24">
