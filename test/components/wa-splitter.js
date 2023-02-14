@@ -21,39 +21,28 @@ export class Splitter extends LitElement {
         let startX, startWidth;
 
         const splitter = this.renderRoot.querySelector(".splitter");
-        const codeFrame = document.querySelector("#code-frame");
-        const outputFrame = document.querySelector("#output-frame");
+        const leftFrame = document.querySelector("#left-frame");
+        const rightFrame = document.querySelector("#right-frame");
         splitter.addEventListener("mousedown", (e) => {
             isDragging = true;
             startX = e.clientX;
-            startWidth = codeFrame.offsetWidth;
+            startWidth = leftFrame.offsetWidth;
         });
         splitter.addEventListener("touchstart", (e) => {
             isDragging = true;
             startX = e.clientX;
-            startWidth = codeFrame.offsetWidth;
+            startWidth = leftFrame.offsetWidth;
         });
 
         document.addEventListener("mousemove", (e) => {
             if (!isDragging) return;
             const diffX = e.clientX - startX;
-            codeFrame.style.width = startWidth + diffX + "px";
-            outputFrame.style.width = `calc(100% - ${codeFrame.offsetWidth + 3}px)`;
-            editor.blockEditor.resized();
-        });
-
-        document.addEventListener("touchmove", (e) => {
-            if (!isDragging) return;
-            const diffX = e.clientX - startX;
-            codeFrame.style.width = startWidth + diffX + "px";
-            outputFrame.style.width = `calc(100% - ${codeFrame.offsetWidth + 3}px)`;
+            leftFrame.style.width = startWidth + diffX + "px";
+            rightFrame.style.width = `calc(100% - ${leftFrame.offsetWidth + 3}px)`;
             editor.blockEditor.resized();
         });
 
         document.addEventListener("mouseup", (e) => {
-            isDragging = false;
-        });
-        document.addEventListener("touchend", (e) => {
             isDragging = false;
         });
     }

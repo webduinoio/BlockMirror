@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+}
+
+#app-content {
+    height: calc(100vh - 40px)
+}
+
+#left-frame {
+    float: left;
+    width: 40%;
+    margin: 0;
+    height: calc(100vh - 40px)
+}
+
+#right-frame {
+    float: left;
+    width: calc(60% - 3px);
+    height: calc(100vh - 43px)
+}
+
+.CodeMirror {
+    font-family: Arial, monospace;
+    font-size: 20px;
+}

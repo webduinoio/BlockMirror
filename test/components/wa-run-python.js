@@ -53,7 +53,6 @@ export class RunPython extends LitElement {
 
     async firstUpdated() {
         let self = this;
-        self.content = "";
         const run = this.renderRoot.querySelector("#run");
         const icon = this.renderRoot.querySelector("#icon");
         const output = document.getElementById(this.console);
