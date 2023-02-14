@@ -18,7 +18,7 @@ new ResizeObserver(function () {
     editor.refresh();
 }).observe(parentElement);
 
-editor.setCode('print("Hello World!")');
+editor.setCode('print("Hello World!")\n');
 //// editor autocomplete
 const ignore = ['', '#', '!', '-', '=', '@', '$', '%', '&', '+', ';', '(', ')', '*'];
 const ignoreToken = (text) => {

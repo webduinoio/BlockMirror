@@ -50,12 +50,14 @@ export class RunPython extends LitElement {
         }
 
         function stdout_func(msg) {
-            output.innerHTML = output.innerHTML + msg + '<br>';
+            //console.log("stdout:", msg);
+            output.show(msg);
             output.scrollBottom();
         }
 
         function stderr_func(msg) {
-            output.innerHTML = output.innerHTML + msg + '<br>';
+            //console.log("stderr:", msg);
+            output.show(msg);
             output.scrollBottom();
         }
 
@@ -66,7 +68,7 @@ export class RunPython extends LitElement {
         }
 
         run.addEventListener('click', function () {
-            output.innerHTML = '';
+            output.cls();
             var newCode = convertCode(editor.getCode());
             //console.log(newCode);
             pyodide.runPythonAsync(newCode);
