@@ -119,8 +119,10 @@ export class RunPython extends LitElement {
     }
 
     frontTest() {
-        var sampleinput = Main.examJson['sampleinput'];
-        var sampleoutput = Main.examJson['sampleoutput'];
+        var exam = document.getElementById("exam");
+        var info = exam.getInfo();
+        var sampleinput = info['sampleinput'];
+        var sampleoutput = info['sampleoutput'];
         this.output.cls();
         var newCode = editor.getCode();
         this.pyodide.setStdin({
