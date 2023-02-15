@@ -77,8 +77,10 @@ export class RunPython extends LitElement {
 
         function convertCode(code) {
             var imp = 'import js\nimport asyncio\n';
-            return imp +
-                code.replace(/input\(/g, 'await js.Main.input(');
+            var convertCode = imp +
+                code.replace(/input()\(/g, 'str(await js.Main.input()');
+            //console.log("=========\n",convertCode);
+            return convertCode;
         }
 
         run.addEventListener('click', async function () {
@@ -118,30 +120,63 @@ export class RunPython extends LitElement {
         run.removeAttribute('disabled');
     }
 
-    frontTest() {
-        var exam = document.getElementById("exam");
-        var info = exam.getInfo();
-        var sampleinput = info['sampleinput'];
-        var sampleoutput = info['sampleoutput'];
-        this.output.cls();
-        var newCode = editor.getCode();
+    testCase(idx, newCode, sampleinput, sampleoutput) {
+        console.log("testcase #" + idx);
+        let allInputData = ''; // for debug
         this.pyodide.setStdin({
             stdin: function () {
-                return sampleinput;
-            }
-        })
-        this.runPythonCode(newCode).then(result => {
-            if (result != null) {
-                result = result.substring(result.indexOf(',') + 1);
-                output.showErr(result);
-            }
-            var outputData = this.output.getMsg().replace(/<br>/g, '');
-            if (sampleoutput == outputData) {
-                alert('測試成功');
-            } else {
-                alert('測試失敗');
-            }
+                var anInput = sampleinput.shift();
+                if (typeof (anInput) == 'undefined') {
+                    throw "EOF";
+                } else {
+                    anInput = anInput + '\n';
+                }
+                allInputData += anInput;
+                return anInput;
+            },
+            //autoEOF: true
         });
+        var self = this;
+        return new Promise((resolve, reject) => {
+            this.output.cls();
+            self.runPythonCode(newCode).then(result => {
+                if (result != null) {
+                    result = result.substring(result.indexOf(',') + 1);
+                    output.showErr(result);
+                }
+                var outputData = self.output.getMsg().replace(/<br>/g, '\n');
+                //cut of last \n
+                outputData = outputData.substring(0, outputData.length - 1);
+                //console.log("sampleinput=", sampleinput, " \noutputData=" + outputData);
+                let correctOutput = sampleoutput.join('\n');
+                let resultOutput = outputData;
+                //console.log("input:", allInputData, " , check [" + correctOutput + "]==[" + resultOutput + "]");
+                //console.log(correctOutput, correctOutput.length);
+                //console.log(resultOutput, resultOutput.length);
+                resolve(correctOutput == resultOutput);
+            });
+        });
+    }
+
+    async frontTest() {
+        var exam = document.getElementById("exam");
+        var info = exam.getInfo();
+        // copy testdata
+        var sample = JSON.parse(JSON.stringify(info['sample']));
+        this.output.cls();
+        var newCode = editor.getCode();
+        var success = true;
+        for (var i = 0; i < sample.length; i = i + 2) {
+            var idx = (i / 2) + 1;
+            var input = sample[i];
+            var out = sample[i + 1];
+            var result = await this.testCase(idx, newCode, input, out);
+            if (!result) {
+                success = false;
+                break;
+            }
+        }
+        alert('測試' + (success ? "成功" : "失敗"));
     }
 
     render() {
