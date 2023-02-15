@@ -1,0 +1,31 @@
+{
+    "title": "a001.哈囉",
+    "content": "學習所有程式語言的第一個練習題 請寫一個程式，可以讀入指定的字串，並且輸出指定的字串。比如：輸入字串 \"world\", 則請輸出 \"hello, world\"",
+    "theinput": "輸入總共一行，內含一組文字",
+    "theoutput": "輸出題目指定的文字。",
+    "sample": [
+        [
+            "world"
+        ],
+        [
+            "hello, world"
+        ],
+        [
+            "C++"
+        ],
+        [
+            "hello, C++"
+        ],
+        [
+            "Taiwan"
+        ],
+        [
+            "hello, Taiwan"
+        ]
+    ],
+    "hint": "",
+    "hash": [
+        "基本輸出輸入"
+    ],
+    "samplecode":"print('hello, '+input())\n"
+}

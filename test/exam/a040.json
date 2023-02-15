@@ -1,0 +1,26 @@
+{
+    "title": "a040.阿姆斯壯數",
+    "content": "所謂 Armstrong number 指的是一個 n 位數的整數，它的所有位數的 n 次方和恰好等於自己。如；1634 = 14+64+34+44\n請依題目需求在一定範圍內找出該範圍內的所有 armstrong numbers.",
+    "theinput": "輸入共一行包含兩個數字n, m(n<m, n>0, m<=1000000)，代表所有尋找 armstrong number 的範圍",
+    "theoutput": "將所有範圍內的 armstrong number 依序由小到大輸出，如果沒有找到請輸出 none.",
+    "sample": [
+        [
+            "100 999"
+        ],
+        [
+            "153 370 371 407"
+        ],
+        [
+            "10 99"
+        ],
+        [
+            "none"
+        ]
+    ],
+    "hint": "",
+    "hash": [
+        "數學",
+        "窮舉"
+    ],
+    "samplecode": "# not yet"
+}
