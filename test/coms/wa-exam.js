@@ -6,6 +6,7 @@ import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/al
  * associate: fetch ./exam/q001.json
  * Author: Marty
  * Date: 2022/02
+ * stringify tool: https://onlinetexttools.com/json-stringify-text
  */
 export class Exam extends LitElement {
 
@@ -19,119 +20,157 @@ export class Exam extends LitElement {
 
     static styles = [css`
     :host {
-        height: 100%;
-        display: flex;
         font-size:18px;
+        overflow:auto;
+        height: calc(100% - 10px);
+        display: block;
     }
-    .header-title , .header-content ,
-    .header-theinput , .header-theoutput ,
-    .header-sampleinput , .header-sampleoutput
-    {
-        background-color:rgb(52 131 200);
-        color: #eee;
-        font-size:20px;
-        line-height: 20px;
-        padding:10px;
-    }
-    .title , .content ,
-    .theinput , .theoutput ,
-    .sampleinput , .sampleoutput
-    {
-        background-color:#eee;
-        font-size:18px;
-        padding:15px;
+    .container {
+        margin:10px;
     }
     `
         ,
     css`
-    .container {  
-        height: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 0.4fr 0.5fr 0.4fr 2.4fr 0.4fr 1.9fr 0.4fr 2.4fr;
-        gap: 1px 1px;
-        grid-auto-flow: row;
-        grid-template-areas:
-          "header-title header-title"
-          "title title"
-          "header-content header-content"
-          "content content"
-          "header-theinput header-theoutput"
-          "theinput theoutput"
-          "header-sampleinput header-sampleoutput"
-          "sampleinput sampleoutput";
-      }
-      
-      .header-title { grid-area: header-title; }
-      
-      .title { grid-area: title; }
-      
-      .header-content { grid-area: header-content; }
-      
-      .content { grid-area: content; }
-      
-      .header-theinput { grid-area: header-theinput; }
-      
-      .header-theoutput { grid-area: header-theoutput; }
-      
-      .theinput { grid-area: theinput; }
-      
-      .theoutput { grid-area: theoutput; }
-      
-      .header-sampleinput { grid-area: header-sampleinput; }
-      
-      .header-sampleoutput { grid-area: header-sampleoutput; }
-      
-      .sampleinput { grid-area: sampleinput; }
-      
-      .sampleoutput { grid-area: sampleoutput; }
-      
+    .header-content{
+        margin:10px;
+    }
+    .header-theinput{
+        margin:10px;
+    }
+    .header-theoutput{
+        margin:10px;
+    }
+    .content{
+        margin:20px;
+    }
+    .theinput{
+        margin:20px;
+    }
+    .theoutput{
+        margin:20px;
+    }
+    .header-sampleinput {
+        margin:10px;
+    }
+    .header-sampleoutput {
+        margin:10px;
+    }
+    .header-sample{
+        margin:10px;
+    }
+    .header-hint {
+        margin:10px;
+    }
+    .header-hash {
+        margin:10px;
+    }
+    .hint {
+        margin:20px;
+    }
+    .hash {
+        margin:20px;
+    }
+    .sample-box {
+        margin:15px;
+        border:1px dotted #009FCC;
+        background-color:#333;
+        color:#eee;
+    }
   `];
 
     getInfo() {
         return this.info;
     }
 
-    firstUpdated() {
+    updateExam(examFile) {
         var self = this;
         if (this.path == '' || typeof (this.path) == 'undefined')
             this.path = './exam/';
-        function prepareExam(data) {
-            for (var i in data) {
-                let showData = data[i];
-                var ele = self.renderRoot.getElementById(i);
-                try {
-                    ele.innerHTML = showData;
-                } catch (e) { }
-            }
-            self.info = data;
-            editor.setCode(data['samplecode']);
+
+        function ele(id, data) {
+            var ele = self.renderRoot.getElementById(id);
+            ele.innerHTML = data[id];
         }
-        var examFile = location.hash;
-        examFile = examFile == '' ? 'q001.json' : examFile.substring(1);
+
+        function eleHide(self, className) {
+            self.renderRoot.querySelector(className).style['display'] = "none";
+        }
+
+        function processSample(self, data) {
+            //ele('sample', data);
+            let eleSample = self.renderRoot.querySelector('.sample');
+            let sample = data['sample'];
+            var cnt = '';
+            for (var i = 0; i < sample.length; i = i + 2) {
+                cnt = cnt + "<br><div class='header-sample'>範例輸入 #" + ((i / 2) + 1) + "</div>";
+                cnt = cnt + ("<div class='sample-box'>" + sample[i].join('<br>') + "</div>");
+                cnt = cnt + "<div class='header-sample'>範例輸出 #" + ((i / 2) + 1) + "</div>";
+                cnt = cnt + ("<div class='sample-box'>" + sample[i + 1].join('<br>') + "</div>");
+            }
+            eleSample.innerHTML = cnt;
+        }
+
+        function prepareExam(data) {
+            ele('title', data);
+            ele('content', data);
+            ele('theinput', data);
+            ele('theoutput', data);
+            if (data['hint'] == '') eleHide(self, '.header-hint');
+            ele('hint', data);
+            if (data['hash'] == '') eleHide(self, '.header-hash');
+            ele('hash', data);
+            processSample(self, data);
+
+            self.info = data;
+            if (typeof (editor) != "undefined" &&
+                typeof (data['samplecode']) != "undefined")
+                editor.setCode(data['samplecode']);
+        }
+
+        if (typeof (examFile) == 'undefined') {
+            examFile = location.hash;
+            examFile = examFile == '' ? 'q001.json' : examFile.substring(1);
+        }
+
         fetch(this.path + examFile)
             .then(response => response.json())
             .then(data => prepareExam(data))
             .catch(error => console.error(error));
     }
 
+    firstUpdated() {
+        this.updateExam();
+    }
+
     render() {
         return html`
-        <div class='exam'>
+        <div>
+        <button onclick="exam.updateExam('a001.json')">a001</button>
+        <button onclick="exam.updateExam('a002.json')">a002</button>
+        <button onclick="exam.updateExam('a003.json')">a003</button>
+        <button onclick="exam.updateExam('a004.json')">a004</button>
+        <button onclick="exam.updateExam('a005.json')">a005</button>
+        <button onclick="exam.updateExam('a009.json')">a009</button>
+        <button onclick="exam.updateExam('a040.json')">a040</button>
+        </div><br>        
         <div class="container">
-            <div class="header-title">題目</div>
-            <div class="title" id="title"></div>
-            <div class="header-content">內容</div>
+            <div class="header-title">題目：<span id="title"></span></div>
+            <br></div>
+            <pre class="header-content">內容</pre>
             <div class="content" id="content"></div>
             <div class="header-theinput">輸入說明</div>
-            <div class="header-theoutput">輸出說明</div>
             <div class="theinput" id="theinput"></div>
+            <div class="header-theoutput">輸出說明</div>
             <div class="theoutput" id="theoutput"></div>
-            <div class="header-sampleinput">範例輸入</div>
-            <div class="header-sampleoutput">範例輸出</div>
+
+            <div class="sample" id="sample"></div>
             <div class="sampleinput" id="sampleinput"></div>
             <div class="sampleoutput" id="sampleoutput"></div>
-        </div>
+            <div class="header-hint">提示</div>
+            <div class="sample"></div>
+            <div class="hint" id="hint"></div>
+            <div class="header-hash">標籤</div>
+            <div class="hash" id="hash"></div>
         </div>
 `;
     }
