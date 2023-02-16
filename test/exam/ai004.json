@@ -1,0 +1,26 @@
+{
+    "title": "字串長度",
+    "content": "請寫一個程式，讀入一個字串，然後輸出該字串的長度。",
+    "theinput": "每組輸入只有一行字串，長度不超過1000。",
+    "theoutput": "輸出該字串的長度。",
+    "sample": [
+        [
+            "Hello, world!"
+        ],
+        [
+            "13"
+        ],
+        [
+            "I love Python!"
+        ],
+        [
+            "14"
+        ]
+    ],
+    "hint": "使用 len() 函數可以得到一個字串的長度。",
+    "hash": [
+        "字串處理",
+        "len()函數"
+    ],
+    "samplecode": "s = str(input())\nprint(len(s))\n"
+}

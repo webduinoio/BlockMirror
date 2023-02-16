@@ -1,0 +1,30 @@
+{
+    "title": "學生成績單",
+    "content": "某位老師想要輸出一份班上學生的成績單，請寫一個程式，讀入學生名稱和成績，並輸出所有學生成績。如果學生成績小於60分，請標示出來。",
+    "theinput": "第一行輸入學生人數 n (1 ≤ n ≤ 100)，接下來 n 行每行輸入一位學生的姓名和成績 (姓名為英文字母，長度不超過100，成績為整數，範圍從0到100)",
+    "theoutput": "輸出格式為每行一位學生的姓名、成績，以及 (不及格) 字樣 (若該學生成績小於60分)",
+    "sample": [
+        [
+            "5",
+            "Alice 98",
+            "Bob 35",
+            "Cindy 80",
+            "David 60",
+            "Eric 55"
+        ],
+        [
+            "Alice 98",
+            "Bob 35 (不及格)",
+            "Cindy 80",
+            "David 60",
+            "Eric 55 (不及格)"
+        ]
+    ],
+    "hint": "在輸出成績時，可以用 print 函數加上一些字串來達到題目所要求的輸出格式。",
+    "hash": [
+        "while迴圈",
+        "列表",
+        "條件判斷"
+    ],
+    "samplecode": "n = int(input()) # 讀入學生人數\nstudents = [] # 用來存放學生資訊的列表\nfor i in range(n):\n    student = input().split()\n    students.append(student)\n\nfor student in students: # 輸出學生成績\n    name, score = student[0], int(student[1])\n    if score < 60:\n        print(name, score, '(不及格)')\n    else:\n        print(name, score)\n"
+}

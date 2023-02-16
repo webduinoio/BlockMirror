@@ -72,6 +72,7 @@ export class Exam extends LitElement {
     }
     .sample-box {
         margin:15px;
+        min-width: 100px;
         border:1px dotted #009FCC;
         background-color:#333;
         color:#eee;
@@ -115,8 +116,11 @@ export class Exam extends LitElement {
             ele('content', data);
             ele('theinput', data);
             ele('theoutput', data);
-            if (data['hint'] == '') eleHide(self, '.header-hint');
-            ele('hint', data);
+            if (data['hint'] == '') {
+                eleHide(self, '.header-hint');
+            } else {
+                ele('hint', data);    
+            }
             if (data['hash'] == '') eleHide(self, '.header-hash');
             ele('hash', data);
             processSample(self, data);
@@ -129,7 +133,7 @@ export class Exam extends LitElement {
 
         if (typeof (examFile) == 'undefined') {
             examFile = location.hash;
-            examFile = examFile == '' ? 'q001.json' : examFile.substring(1);
+            examFile = examFile == '' ? 'a001.json' : examFile.substring(1);
         }
 
         fetch(this.path + examFile)
@@ -152,6 +156,7 @@ export class Exam extends LitElement {
         <button onclick="exam.updateExam('a005.json')">a005</button>
         <button onclick="exam.updateExam('a009.json')">a009</button>
         <button onclick="exam.updateExam('a040.json')">a040</button>
+        <button onclick="exam.updateExam('ai001.json')">ai001</button>
         </div><br>        
         <div class="container">
             <div class="header-title">題目：<span id="title"></span></div>
@@ -166,8 +171,8 @@ export class Exam extends LitElement {
             <div class="sample" id="sample"></div>
             <div class="sampleinput" id="sampleinput"></div>
             <div class="sampleoutput" id="sampleoutput"></div>
-            <div class="header-hint">提示</div>
             <div class="sample"></div>
+            <div class="header-hint">提示</div>
             <div class="hint" id="hint"></div>
             <div class="header-hash">標籤</div>
             <div class="hash" id="hash"></div>
