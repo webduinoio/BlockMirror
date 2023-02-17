@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script type="module" src="./wa-crud.js"></script>
+    <script type="module" src="./wa-crud-col.js"></script>
+    <style>
+        body {
+            height: 100vh;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+</head>
+
+<body>
+    CRUD
+    <wa-crud url="https://mopcon.nodered.vip/api/data/" width="640px" height="420px">
+        <wa-crud-col title="id" name="id" type="text" width="40"></wa-crud-col>
+        <wa-crud-col title="title" name="title" type="text" width="100"></wa-crud-col>
+        <wa-crud-col title="content" name="content" type="text" width="150"></wa-crud-col>
+        <wa-crud-col title="theinput" name="theinput" type="text" width="150"></wa-crud-col>
+        <wa-crud-col title="theoutput" name="theoutput" type="text" width="150"></wa-crud-col>
+        <wa-crud-col title="sample" name="sample" type="text" width="150"></wa-crud-col>
+        <wa-crud-col title="hint" name="hint" type="text" width="125" show="true"></wa-crud-col>
+        <wa-crud-col title="hash" name="hash" type="text" width="100" show="true"></wa-crud-col>
+        <wa-crud-col title="samplecode" name="samplecode" type="text" width="100" show="true"></wa-crud-col>
+    </wa-crud>
+    <wa-crud url="https://mopcon.nodered.vip/api/test/" width="340px" height="220px">
+        <wa-crud-col title="id" name="id" type="text" width="40"></wa-crud-col>
+        <wa-crud-col title="tel" name="tel" type="text" width="100" show="true"></wa-crud-col>
+    </wa-crud>
+</body>
+
+</html>
