@@ -21,5 +21,5 @@
     "hash": [
         "字元處理"
     ],
-    "samplecode": "# not yet"
+    "samplecode": "encrypted_str = input()  # 讀取輸入的加密字串\ndecrypted_str = ''  # 儲存解密後的明文\n\nfor c in encrypted_str:\n        decrypted_str += chr(ord(c) - 7)  # 將 ASCII 碼減 7 後轉換為字元並加到解密字串中\n\nprint(decrypted_str)  # 輸出解密後的明文"
 }
