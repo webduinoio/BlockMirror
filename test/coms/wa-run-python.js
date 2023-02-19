@@ -158,8 +158,8 @@ export class RunPython extends LitElement {
         });
     }
 
-    async frontTest() {
-        var exam = document.getElementById("exam");
+    async frontTest(exam) {
+        //var exam = document.getElementById("exam");
         var info = exam.getInfo();
         // copy testdata
         var sample = JSON.parse(JSON.stringify(info['sample']));

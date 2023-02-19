@@ -12,6 +12,7 @@ export class Exam extends LitElement {
 
     static properties = {
         path: {},
+        bind: {},
     };
 
     constructor() {
@@ -119,7 +120,7 @@ export class Exam extends LitElement {
             if (data['hint'] == '') {
                 eleHide(self, '.header-hint');
             } else {
-                ele('hint', data);    
+                ele('hint', data);
             }
             if (data['hash'] == '') eleHide(self, '.header-hash');
             ele('hash', data);
@@ -144,19 +145,24 @@ export class Exam extends LitElement {
 
     firstUpdated() {
         this.updateExam();
+        //console.log("exam id:", this.id, this.bind);
+        if (typeof (this.bind) != "undefined") {
+            eval(this.bind)[this.id] = this;
+        }
+
     }
 
     render() {
         return html`
         <div>
-        <button onclick="exam.updateExam('a001.json')">a001</button>
-        <button onclick="exam.updateExam('a002.json')">a002</button>
-        <button onclick="exam.updateExam('a003.json')">a003</button>
-        <button onclick="exam.updateExam('a004.json')">a004</button>
-        <button onclick="exam.updateExam('a005.json')">a005</button>
-        <button onclick="exam.updateExam('a009.json')">a009</button>
-        <button onclick="exam.updateExam('a040.json')">a040</button>
-        <button onclick="exam.updateExam('ai001.json')">ai001</button>
+        <button onclick="Main.exam.updateExam('a001.json')">a001</button>
+        <button onclick="Main.exam.updateExam('a002.json')">a002</button>
+        <button onclick="Main.exam.updateExam('a003.json')">a003</button>
+        <button onclick="Main.exam.updateExam('a004.json')">a004</button>
+        <button onclick="Main.exam.updateExam('a005.json')">a005</button>
+        <button onclick="Main.exam.updateExam('a009.json')">a009</button>
+        <button onclick="Main.exam.updateExam('a040.json')">a040</button>
+        <button onclick="Main.exam.updateExam('ai001.json')">ai001</button>
         </div><br>        
         <div class="container">
             <div class="header-title">題目：<span id="title"></span></div>

@@ -1,0 +1,28 @@
+{
+    "id": "py001",
+    "title": "求取圓的面積和周長",
+    "content": "請寫一個程式，讀入一個半徑 r，求圓的面積和周長。",
+    "theinput": "每組輸入共一行，內含一個正整數 r (0 < r < 1000)。",
+    "theoutput": "對於每組輸入，輸出該圓的面積和周長，保留兩位小數。",
+    "sample": [
+        [
+            "5"
+        ],
+        [
+            "78.54 31.42"
+        ],
+        [
+            "10"
+        ],
+        [
+            "314.16 62.83"
+        ]
+    ],
+    "hint": "圓周率可以使用 math 库的 pi 常量来获得。",
+    "hash": [
+        "Python",
+        "資料型別",
+        "math 库"
+    ],
+    "samplecode": "import math\n\nr = int(input())\narea = round(math.pi * r ** 2, 2)\ncircumference = round(math.pi * 2 * r, 2)\nprint(str(area) + ' ' + str(circumference))\n"
+}
