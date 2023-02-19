@@ -122,6 +122,7 @@ export class RunPython extends LitElement {
 
     testCase(idx, newCode, sampleinput, sampleoutput) {
         console.log("testcase #" + idx);
+        console.log("sampleinput #" + sampleinput);
         let allInputData = ''; // for debug
         this.pyodide.setStdin({
             stdin: function () {
@@ -162,7 +163,7 @@ export class RunPython extends LitElement {
         //var exam = document.getElementById("exam");
         var info = exam.getInfo();
         // copy testdata
-        var sample = JSON.parse(JSON.stringify(info['sample']));
+        var sample = JSON.parse(info['sample']);
         this.output.cls();
         var newCode = editor.getCode();
         var success = true;
