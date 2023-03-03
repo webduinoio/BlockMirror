@@ -84,8 +84,9 @@ export class Question extends LitElement {
         return this.info;
     }
 
-    updateExam(examFile) {
+    updateExam(idx) {
         var self = this;
+        self.idx = idx;
         if (this.url == '' || typeof (this.url) == 'undefined')
             this.url = 'https://mopcon.nodered.vip/api/data/qry?row=';
 
@@ -99,7 +100,6 @@ export class Question extends LitElement {
         }
 
         function processSample(self, data) {
-            //ele('sample', data);
             let eleSample = self.renderRoot.querySelector('.sample');
             let sample = JSON.parse(data['sample']);
             var cnt = '';
@@ -131,11 +131,6 @@ export class Question extends LitElement {
             if (typeof (editor) != "undefined" &&
                 typeof (data['samplecode']) != "undefined")
                 editor.setCode(data['samplecode']);
-        }
-
-        if (typeof (examFile) == 'undefined') {
-            examFile = location.hash;
-            examFile = examFile == '' ? 'a001.json' : examFile.substring(1);
         }
 
         fetch(this.url + this.idx)
