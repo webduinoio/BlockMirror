@@ -50,7 +50,7 @@ export class SplitV extends LitElement {
             splitter.style.top = originalTop + delta + "px";
             splitter.previousElementSibling.style.height = originalBodyHeight + delta + "px";
             body.style.height = (ele.offsetHeight - header.offsetHeight) + "px";
-            header.children[0].style.height = header.offsetHeight + "px";
+            //header.children[0].style.height = header.offsetHeight + "px";
         });
     }
 
