@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@2/al
 
 /**
  * filename：wa-exam.js
- * descript：顯示題目
+ * descript：顯示題目 (只能讀取指定json檔案)
  * associate: fetch ./exam/q001.json
  * Author: Marty
  * Date: 2022/02
