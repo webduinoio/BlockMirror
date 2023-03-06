@@ -78,7 +78,7 @@ export class RunPython extends LitElement {
         function convertCode(code) {
             var imp = 'import js\nimport asyncio\n';
             var convertCode = imp +
-                code.replace(/input()\(/g, 'str(await js.Main.input()');
+                code.replace(/input()\(/g, 'str(await js.window.Main.input()');
             //console.log("=========\n",convertCode);
             return convertCode;
         }
@@ -104,8 +104,7 @@ export class RunPython extends LitElement {
         });
         run.style['color'] = '#eee';
         icon.style['fill'] = '#eee';
-
-        Main.input = async function (msg) {
+        window.Main.input = async function (msg) {
             return new Promise((resolve, reject) => {
                 setTimeout(function () {
                     var rtn = prompt();

@@ -36,7 +36,7 @@ export class Markdown extends LitElement {
         }
         if (content.startsWith("q")) {
             var row = content.substring(1);
-            htmlContent = '<wa-question id="exam" idx="' + row + '" bind="Main"></wa-question>';
+            htmlContent = '<wa-question id="exam" idx="' + row + '" bind="window.Main"></wa-question>';
         } else {
             var converter = new showdown.Converter();
             var text = await fetch(this.path + content, {})
