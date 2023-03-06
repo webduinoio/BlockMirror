@@ -12,6 +12,11 @@ export class Output extends LitElement {
     }
 
     static styles = [css`
+    p{
+        display: block;
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+    }    
     #output-title {
         width: calc(100% - 10px);
         font-size: 20px;
@@ -62,19 +67,25 @@ export class Output extends LitElement {
 
     cls() {
         this.output.innerHTML = '';
+        this.output.data = '';
     }
 
     show(msg) {
-        this.output.innerHTML = this.output.innerHTML + msg + "<br>";
+        this.output.innerHTML = this.output.innerHTML + ("<p>" + msg + "</p>");
+        this.output.data = this.output.data + msg + "\n";
     }
 
     showErr(msg) {
         this.output.innerHTML = this.output.innerHTML +
-            "<span style='color:red'>" + msg + "</span><br>";
+            "<p><span style='color:red'>" + msg + "</span></p>";
     }
 
     getMsg() {
         return this.output.innerHTML;
+    }
+
+    getOutputData() {
+        return this.output.data;
     }
 
     firstUpdated() {
@@ -84,6 +95,7 @@ export class Output extends LitElement {
         var self = this;
         this.clear.addEventListener('click', function () {
             self.output.innerHTML = '';
+            self.output.data = '';
         })
         //*/
     }

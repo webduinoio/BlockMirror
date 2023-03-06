@@ -107,7 +107,7 @@ export class RunPython extends LitElement {
         window.Main.input = async function (msg) {
             return new Promise((resolve, reject) => {
                 setTimeout(function () {
-                    var rtn = prompt();
+                    var rtn = prompt(msg);
                     resolve(rtn);
                 }, 500);
             });
@@ -121,7 +121,8 @@ export class RunPython extends LitElement {
 
     testCase(idx, newCode, sampleinput, sampleoutput) {
         console.log("testcase #" + idx);
-        console.log("sampleinput #" + sampleinput);
+//        console.log("sampleinput:" + sampleinput);
+//        console.log("sampleoutput:" + sampleoutput);
         let allInputData = ''; // for debug
         this.pyodide.setStdin({
             stdin: function () {
@@ -144,7 +145,7 @@ export class RunPython extends LitElement {
                     result = result.substring(result.indexOf(',') + 1);
                     output.showErr(result);
                 }
-                var outputData = self.output.getMsg().replace(/<br>/g, '\n');
+                var outputData = self.output.getOutputData();
                 //cut of last \n
                 outputData = outputData.substring(0, outputData.length - 1);
                 //console.log("sampleinput=", sampleinput, " \noutputData=" + outputData);
@@ -170,6 +171,7 @@ export class RunPython extends LitElement {
             var idx = (i / 2) + 1;
             var input = sample[i];
             var out = sample[i + 1];
+//            console.log(">>>", input, out);
             var result = await this.testCase(idx, newCode, input, out);
             if (!result) {
                 success = false;
