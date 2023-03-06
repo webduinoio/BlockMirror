@@ -22,6 +22,7 @@ export class MenuBar extends LitElement {
         z-index: 100;
     }
     .toolMenu {
+        width:480px;
         float: right;
         box-sizing: border-box;
         font-size: 15px;

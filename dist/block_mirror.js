@@ -503,6 +503,7 @@ function BlockMirrorTextEditor(blockMirror) {
     firstLineNumber: 1,
     indentUnit: 4,
     tabSize: 4,
+    fontSize: 11,
     indentWithTabs: false,
     matchBrackets: true,
     extraKeys: {
