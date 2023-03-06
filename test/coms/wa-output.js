@@ -12,11 +12,6 @@ export class Output extends LitElement {
     }
 
     static styles = [css`
-    p{
-        display: block;
-        margin-block-start: 0em;
-        margin-block-end: 0em;
-    }    
     #output-title {
         width: calc(100% - 10px);
         font-size: 20px;
@@ -27,13 +22,30 @@ export class Output extends LitElement {
         padding-left: 10px;
         user-select: none;
     }
+
+    input[type=text] {
+        background-color: #000;
+        color: #fff;
+        border: none;
+        width: 100%; 
+        height: 1em;
+        font-size:1.2em;
+        padding: 0.0em;
+    }    
+    p{
+        display: block;
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        font-size:1.2em;
+    }    
     #output-console {
-        font-size: 20px;
+        height: 10em;
+        padding: 0.5em;
+        font-size:1.2em;
         height: calc(100% - 52px);
         width: calc(100% - 20px);
         color: #Fefefe;
         background-color: #303030;
-        padding: 10px;
         overflow: scroll;
     }
     svg {
@@ -48,6 +60,28 @@ export class Output extends LitElement {
         transform: rotate(45deg);
     }    
   `];
+
+    async addInput(cb) {
+        var output = this.output;
+        var input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "輸入文字，按 Enter 結束";
+        input.addEventListener("keydown", function (e) {
+            if (e.keyCode === 13) {
+                e.preventDefault();
+                var text = this.value.trim();
+                if (text !== "") {
+                    var p = document.createElement("p");
+                    p.textContent = text;
+                    output.appendChild(p);
+                    cb(text);
+                }
+                output.removeChild(this);
+            }
+        });
+        output.appendChild(input);
+        input.focus();
+    }
 
     scrollBottom() {
         const distance = this.output.scrollHeight - this.output.scrollTop;

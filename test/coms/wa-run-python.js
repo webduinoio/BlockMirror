@@ -104,12 +104,12 @@ export class RunPython extends LitElement {
         });
         run.style['color'] = '#eee';
         icon.style['fill'] = '#eee';
+
         window.Main.input = async function (msg) {
             return new Promise((resolve, reject) => {
-                setTimeout(function () {
-                    var rtn = prompt(msg);
-                    resolve(rtn);
-                }, 500);
+                output.addInput(function (rtnData) {
+                    resolve(rtnData);
+                })
             });
         }
         this.pyodide = pyodide;
@@ -121,8 +121,8 @@ export class RunPython extends LitElement {
 
     testCase(idx, newCode, sampleinput, sampleoutput) {
         console.log("testcase #" + idx);
-//        console.log("sampleinput:" + sampleinput);
-//        console.log("sampleoutput:" + sampleoutput);
+        //        console.log("sampleinput:" + sampleinput);
+        //        console.log("sampleoutput:" + sampleoutput);
         let allInputData = ''; // for debug
         this.pyodide.setStdin({
             stdin: function () {
@@ -171,7 +171,7 @@ export class RunPython extends LitElement {
             var idx = (i / 2) + 1;
             var input = sample[i];
             var out = sample[i + 1];
-//            console.log(">>>", input, out);
+            //            console.log(">>>", input, out);
             var result = await this.testCase(idx, newCode, input, out);
             if (!result) {
                 success = false;
