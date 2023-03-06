@@ -19,6 +19,7 @@
     <script type="module" src="coms/wa-split-v.js"></script>
     <script type="module" src="coms/wa-question.js"></script>
     <script type="module" src="coms/wa-markdown.js"></script>
+    <script type="module" src="coms/wa-range.js"></script>
 
     <!-- Blockly  -->
     <script src="../lib/blockly/blockly_compressed.js" type="text/javascript"></script>
@@ -53,28 +54,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/extensions/showdown-highlight/showdown-highlight.min.js"></script>
     -->
-    <style>
-        input[type=range] {
-            width: 100px;
-            height: 24px;
-        }
-
-        #value {
-            margin-top: 10px;
-            font-size: 14px;
-        }
-    </style>
-
 </head>
 
 <body>
     <wa-menubar id="menubar">
-        <div>
-            <input type="range" min="12" max="64" value="24" step="1" id="slider">
-            <span id="value">10</span>
-            <wa-run-python id='runPython' console="output"></wa-run-python>
-            <wa-ai-chat-dialog>詢問</wa-ai-chat-dialog>
-        </div>
+        <wa-range id="range" value="16px"></wa-range>
+        <wa-run-python id='runPython' console="output"></wa-run-python>
+        <wa-ai-chat-dialog>詢問</wa-ai-chat-dialog>
     </wa-menubar>
 
     <div id="app-content">

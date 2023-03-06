@@ -8,20 +8,6 @@ var editor = new BlockMirror({
     'viewMode': 'text', // text , split ,block
 });
 
-
-var slider = document.getElementById("slider");
-var value = document.getElementById("value");
-
-slider.addEventListener("input", function () {
-    value.innerHTML = slider.value;
-    setFontSize(slider.value);
-});
-
-function setFontSize(size) {
-    document.getElementsByClassName("CodeMirror")[0].style['font-size'] = size + 'px';
-    editor.textEditor.codeMirror.refresh();
-}
-
 // resize detect
 new ResizeObserver(function () {
     editor.blockEditor.blockMirror.configuration.height = parentElement.offsetHeight;
@@ -71,7 +57,16 @@ print(year)
 
 
 class Main {
-
+    ready(name, obj) {
+        console.log("Ready...", name, obj);
+        if (name == 'wa-range') {
+            var range = obj;
+            range.onSlider(function (value) {
+                document.getElementsByClassName("CodeMirror")[0].style['font-size'] = value + 'px';
+                editor.textEditor.codeMirror.refresh();
+            });
+        }
+    }
 }
 
-window.Main = Main;
+window.Main = new Main();
