@@ -4,6 +4,12 @@
 <head>
     <meta charset="utf-8">
     <title>egame 2023</title>
+    <style>
+        body {
+            position: fixed;
+            width: 100%;
+        }
+    </style>
     <!-- Pyodide -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
 
@@ -64,9 +70,8 @@
     </wa-menubar>
 
     <div id="app-content">
-        <div id='left-frame'>
+        <div id='left-frame' style='width:30%'>
             <wa-markdown path="md/" default="index.md"></wa-markdown>
-            <!-- <wa-exam id="exam"></wa-exam> -->
         </div>
         <wa-splitter></wa-splitter>
         <div id="right-frame">
