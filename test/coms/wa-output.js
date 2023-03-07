@@ -13,7 +13,7 @@ export class Output extends LitElement {
 
     static styles = [css`
     #output-title {
-        width: calc(100% - 10px);
+        width: calc(100% - 9px);
         font-size: 20px;
         height: 32px;
         line-height: 32px;
@@ -43,7 +43,7 @@ export class Output extends LitElement {
         padding: 0.5em;
         font-size:1.2em;
         height: calc(100% - 52px);
-        width: calc(100% - 20px);
+        width: calc(100% - 19px);
         color: #Fefefe;
         background-color: #303030;
         overflow: scroll;

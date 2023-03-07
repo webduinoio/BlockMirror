@@ -29,6 +29,9 @@ export class Splitter extends LitElement {
         let ele = this.parentElement;
         let leftFrame = ele.children[0];
         let rightFrame = ele.children[2];
+        leftFrame.style.width = startWidth + "px";
+        rightFrame.style.width = `calc(100% - ${leftFrame.offsetWidth + 3}px)`;
+        editor.blockEditor.resized();
 
         splitter.addEventListener("mousedown", (e) => {
             isDragging = true;
