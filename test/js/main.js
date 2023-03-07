@@ -58,7 +58,7 @@ print(year)
 
 class Main {
     ready(name, obj) {
-        console.log("Ready...", name, obj);
+        console.log("Component Ready...", name);
         if (name == 'wa-range') {
             var range = obj;
             range.onSlider(function (value) {
@@ -70,3 +70,4 @@ class Main {
 }
 
 window.Main = new Main();
+window.Main.editor = editor;
