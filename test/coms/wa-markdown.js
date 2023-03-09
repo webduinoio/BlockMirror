@@ -27,32 +27,46 @@ export class Markdown extends LitElement {
     }
     `];
 
-    async getContent() {
-        var idx = location.hash;
+    async getContent(from, to) {
+        var idx = to;
         var content = this.default;
         var htmlContent = '';
-        if (idx.length > 1) {
+        if (idx.length >= 1) {
             content = idx.substring(1);
+        } else {
+            return;
         }
         if (content.startsWith("q")) {
             var row = content.substring(1);
             htmlContent = '<wa-question id="exam" idx="' + row + '" bind="window.Main"></wa-question>';
-        } else {
+            this.renderRoot.innerHTML = htmlContent;
+        }
+        else if (content.endsWith(".exam")) {
+            var text = await fetch(this.path + content, {})
+                .then((response) => {
+                    return response.text();
+                });
+            window.Main.editor.setCode(text);
+            location.hash = from;
+        }
+        else {
             var converter = new showdown.Converter();
             var text = await fetch(this.path + content, {})
                 .then((response) => {
                     return response.text();
                 });
             htmlContent = converter.makeHtml(text);
+            this.renderRoot.innerHTML = htmlContent;
         }
-        this.renderRoot.innerHTML = htmlContent;
     }
 
     firstUpdated() {
-        this.getContent();
         var self = this;
+        self.lastHash = location.hash;
+        this.getContent(self.lastHash, location.hash);
         window.addEventListener('hashchange', function () {
-            self.getContent();
+            self.getContent(self.lastHash, location.hash);
+            self.lastHash = location.hash;
         });
     }
 
