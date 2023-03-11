@@ -8,7 +8,13 @@
             position: relative;
             width: 200px;
             height: 200px;
-            background-color: #f0f0f0;
+            border: 1px solid;
+        }
+
+        .dragDiv {
+            position: relative;
+            width: 200px;
+            height: 200px;
         }
 
         .title {
@@ -39,10 +45,20 @@
     <button id="stopButton">Stop</button>
     <div>
         <div id="box1" class="box">
-            <h1><span style='font-size:164px'>1</span></h1>
+            box1
+            <div id="dd1" class="dragDiv">
+                <h1><span style='font-size:164px'>1</span></h1>
+            </div>
         </div>
         <div id="box2" class="box">
-            <h1><span style='font-size:164px'>2</span></h1>
+            box2
+            <div id="dd2" class="dragDiv">
+                <h1><span style='font-size:164px'>2</span></h1>
+            </div>
+        </div>
+
+        <div id="box3" class="box">
+            box3
         </div>
     </div>
     <script>
@@ -58,6 +74,7 @@
 
             static addBox(box) {
                 Box.boxes.push(box);
+                // 元素擺放到畫面時的左上角 x,y 座標 (尚未拖拉前的位置)
                 Box.boxesInitPos[box.getBox().id] = {
                     "x": box.getBox().offsetLeft,
                     "y": box.getBox().offsetTop
@@ -69,6 +86,30 @@
                 return Box.boxes;
             }
 
+            static saveTmpLeftTop(box) {
+                var left = box.getBox().style.left;
+                var top = box.getBox().style.top;
+                box.tmp = {
+                    left: left == '' ? '0px' : left,
+                    top: top == '' ? 'opx' : top
+                }
+            }
+
+            static loadTmpLeftTop(box) {
+                box.getBox().style.left = box.tmp.left;
+                box.getBox().style.top = box.tmp.top;
+                delete box.tmp;
+            }
+
+            static updateLeftTop(box, dx, dy) {
+                var x = box.getBox().style.left;
+                var y = box.getBox().style.top;
+                x = parseInt(x.replace('px', '')) + dx;
+                y = parseInt(y.replace('px', '')) + dy;
+                box.getBox().style.left = x + "px";
+                box.getBox().style.top = y + "px";
+            }
+
             constructor(boxId) {
                 this.swapPos = false;
                 this.isDragging = false;
@@ -77,15 +118,8 @@
                 this.eleBox = document.getElementById(boxId);
                 this.eleBox.appendChild(this.eleTitle);
                 this.container = document.getElementsByTagName('body')[0];
-                // 元素的座標資訊
-                this.pos = {
-                    // 元素擺放到畫面時的top,left預設為""
-                    "top": 0, "left": 0,
-                    // 元素擺放到畫面時的左上角 x,y 座標 (尚未拖拉前的位置)
-                    "offsetLeft": this.eleBox.offsetLeft,
-                    "offsetTop": this.eleBox.offsetTop
-                };
-                this.info();
+                this.eleBox.style.top = '0px';
+                this.eleBox.style.left = '0px';
             }
 
             startDrag() {
@@ -100,28 +134,27 @@
                     }
                     self.isDragging = true;
                     //紀錄滑鼠按下的座標位置(畫面x,y)
-                    self.pos['clientX'] = evt.clientX;
-                    self.pos['clientY'] = evt.clientY;
-                    self.pos['_top'] = self.pos['top'];
-                    self.pos['_left'] = self.pos['left'];
-                    self.info(evt);
+                    self.tmpClientX = evt.clientX;
+                    self.tmpClientY = evt.clientY;
+                    Box.saveTmpLeftTop(self);
                 };
 
                 // mousemove event
                 this.dragingEvent = function (evt) {
+                    evt.preventDefault();
                     if (self.isDragging) {
                         // Calculate the new position of the box
-                        var dx = evt.clientX - self.pos['clientX'];
-                        var dy = evt.clientY - self.pos['clientY'];
-                        self.pos['top'] += dy;
-                        self.pos['left'] += dx;
+                        var dx = evt.clientX - self.tmpClientX;
+                        var dy = evt.clientY - self.tmpClientY;
                         // Update the position of the box
-                        self.setBoxLeftTop(self.pos['left'], self.pos['top']);
-                        self.pos['clientX'] = evt.clientX;
-                        self.pos['clientY'] = evt.clientY;
+                        Box.updateLeftTop(self, dx, dy);
+                        self.tmpClientX = evt.clientX;
+                        self.tmpClientY = evt.clientY;
                         self.checkNearestBox(self, 100);
                     }
                 }
+
+                // mouseup event
                 this.stopDragEvent = function (evt) {
                     evt.preventDefault();
                     if (self.isDragging) {
@@ -130,14 +163,10 @@
                             self.checkSwapPos(self);
                         } else {
                             console.log("no swap,restore");
-                            self.pos['top'] = self.pos['_top'];
-                            self.pos['left'] = self.pos['_left'];
-                            self.setBoxLeftTop(self.pos['left'], self.pos['top']);
+                            Box.loadTmpLeftTop(self);
                         }
-                        delete self.pos['clientX'];
-                        delete self.pos['clientY'];
-                        delete self.pos['_left'];
-                        delete self.pos['_top'];
+                        delete self.tmpClientX;
+                        delete self.tmpClientY;
                     }
                     self.isDragging = false;
                 };
@@ -146,33 +175,37 @@
                 self.container.addEventListener("mouseup", this.stopDragEvent);
             }
 
-            swapOffsetLeftTop(aBox, bBox) {
-                var x = aBox.pos['offsetLeft'];
-                var y = aBox.pos['offsetTop'];
-                aBox.pos['offsetLeft'] = bBox.pos['offsetLeft'];
-                aBox.pos['offsetTop'] = bBox.pos['offsetTop'];
-                bBox.pos['offsetLeft'] = x;
-                bBox.pos['offsetTop'] = y;
-            }
 
+            static calDxDy(box1, box2) {
+                var x1 = Box.boxesInitPos[box1.getBox().id]['x'];
+                var y1 = Box.boxesInitPos[box1.getBox().id]['y'];
+                var x2 = Box.boxesInitPos[box2.getBox().id]['x'];
+                var y2 = Box.boxesInitPos[box2.getBox().id]['y'];
+                return { dx: x2 - x1, dy: y2 - y1 };
+            }
+            /*
+            A , B 換位子
+            A --> B (A移動到 B)
+            找出 A,B 原來的offset x,y
+            算出 
+
+
+            */
             checkSwapPos(self) {
                 var boxList = Box.getBoxes();
                 for (var i in boxList) {
                     if (boxList[i].swapPos) {
                         boxList[i].swapPos = false;
-                        var dx = self.pos['offsetLeft'] - boxList[i].pos['offsetLeft'];
-                        var dy = self.pos['offsetTop'] - boxList[i].pos['offsetTop'];
-                        //self.swapOffsetLeftTop(boxList[i],self);
-                        self.pos['top'] = -dy;
-                        self.pos['left'] = -dx;
-                        boxList[i].pos['top'] = dy;
-                        boxList[i].pos['left'] = dx;
+                        var result = Box.calDxDy(self, boxList[i]);
 
-                        self.setBoxLeftTop(-dx, -dy);
-                        boxList[i].setBoxLeftTop(dx, dy);
+                        self.setBoxLeftTop(result['dx'], result['dy']);
+                        boxList[i].setBoxLeftTop(-result['dx'], -result['dy']);
+                        console.log(self.eleBox.id, "-->", boxList[i].eleBox.id,
+                            result['dx'], result['dy']);
+                        console.log(boxList[i].eleBox.id, "-->", self.eleBox.id,
+                            -result['dx'], -result['dy']);
 
                         boxList[i].eleTitle.style['border'] = '0px';
-                        console.log("swap ", self.eleBox.id, boxList[i].eleBox.id);
                         break;
                     }
                 }
@@ -220,7 +253,7 @@
             }
 
             info(evt) {
-                console.log(this.eleBox.id, this.pos);
+                //console.log(this.eleBox.id);
                 //console.log(Box.boxesInitPos);
             }
 
@@ -240,8 +273,8 @@
 
         Box.addBox(new Box('box1'));
         Box.addBox(new Box('box2'));
+        Box.addBox(new Box('box3'));
         console.log("init...", Box.boxesInitPos);
-        //Box.addBox(new Box('box3'));
         var boxes = Box.getBoxes();
 
         var startButton = document.getElementById("startButton");
