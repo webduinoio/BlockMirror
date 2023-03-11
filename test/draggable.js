@@ -1,3 +1,21 @@
+class Container {
+    static list = [];
+    static init(cfg) {
+        for (var key in cfg) {
+            var ctx = new Container(key);
+            Container.list.push(ctx);
+            if (cfg[key] == '') continue;
+            var drag = new Draggable(cfg[key]);
+            drag.ctx = ctx;
+            ctx.drag = drag;
+        }
+    }
+    constructor(id) {
+        this.id = id;
+        this.eleCtx = document.getElementById(id);
+    }
+}
+
 class IDraggable {
     static list = [];
     static saveTmpLeftTop(draggable) {
@@ -37,7 +55,8 @@ class IDraggable {
         var eleTitle = document.createElement('div');
         eleTitle.classList.add("title");
         eleTitle.style['width'] = this.eleDrag.offsetWidth + "px";
-        eleTitle.style['height'] = this.eleDrag.offsetHeight + "px";
+        eleTitle.style['height'] = "32px";
+        //eleTitle.style['height'] = this.eleDrag.offsetHeight + "px";
         this.body = document.getElementsByTagName('body')[0];
         this.body.appendChild(eleTitle);
         return eleTitle;
@@ -54,10 +73,10 @@ class IDraggable {
             var y2 = ctx.eleCtx.offsetTop;
             var calDistance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
             if (calDistance <= distance) {
-                ctx.eleCtx.style['border'] = '3px solid #f47';
+                ctx.eleCtx.style['border'] = '2px solid #f47';
                 ctx.swapPos = true;
             } else {
-                ctx.eleCtx.style['border'] = '1px solid #000';
+                ctx.eleCtx.style['border'] = '0px solid #000';
                 ctx.swapPos = false;
             }
         }
@@ -100,6 +119,7 @@ class IDraggable {
                 var ctx = self.hasNestestContainer();
                 if (ctx != null) {
                     self.swapDraggable(self, ctx);
+                    Draggable.off();
                 }
                 IDraggable.loadTmpLeftTop(self);
                 delete self.tmpClientX;
@@ -124,7 +144,7 @@ class IDraggable {
     }
 
     stop() {
-        console.log("stop...", this.id);
+        //console.log("stop...", this.id);
         this.eleTitle.style['display'] = 'none';
     }
 
@@ -138,5 +158,36 @@ class IDraggable {
         for (var i in Draggable.list) {
             Draggable.list[i].stop();
         }
+    }
+}
+
+class Draggable extends IDraggable {
+    constructor(id) {
+        super(id);
+    }
+    hasNestestContainer() {
+        var ctxList = Container.list;
+        for (var i in ctxList) {
+            if (ctxList[i].swapPos) {
+                return ctxList[i];
+            }
+        }
+        return null;
+    }
+    swapDraggable(drag, ctx) {
+        var ctx1 = drag.ctx;
+        var ctx2 = ctx;
+        if (ctx1 != ctx2) {
+            var eleDrag1 = ctx1.drag.eleDrag;
+            var eleDrag2 = ctx2.drag.eleDrag;
+            ctx1.drag.eleDrag = eleDrag2;
+            ctx2.drag.eleDrag = eleDrag1;
+            ctx1.eleCtx.removeChild(eleDrag1);
+            ctx2.eleCtx.removeChild(eleDrag2);
+            ctx1.eleCtx.appendChild(eleDrag2);
+            ctx2.eleCtx.appendChild(eleDrag1);
+        }
+        ctx2.swapPos = false;
+        ctx2.eleCtx.style['border'] = '0px solid #000';
     }
 }

@@ -5,89 +5,61 @@
     <title>Portal</title>
     <link rel="stylesheet" href="draggable.css">
     <script src="draggable.js"></script>
+    <style>
+        .demo {
+            border: 1px solid;
+            width: 200px;
+            height: 200px;
+            margin:10px;
+        }
+    </style>
 </head>
 
 <body>
-    <button id="startButton">Start</button>
-    <button id="stopButton">Stop</button>
+    <button id="startButton" onclick="Draggable.on()">Start</button>
     <div>
-        <div id='c1' class="container">
-            <div id="drag1" class="draggable">
-                <span style='font-size:90px'>1</span>
+        <div class="demo">
+            <div id='c1' class="container">
+                <div id="drag1" class="draggable">
+                    <span style='font-size:90px'>1</span>
+                </div>
             </div>
         </div>
-        <div id='c2' class="container">
-            <div id="drag2" class="draggable">
-                <span style='font-size:90px'>2</span>
+        <div class="demo">
+            <div id='c2' class="container">
+                <div id="drag2" class="draggable">
+                    <span style='font-size:90px'>2</span>
+                </div>
             </div>
         </div>
-        <div id='c3' class="container">
-            <div id="drag3" class="draggable">
-                <span style='font-size:90px'>3</span>
+        <div class="demo">
+            <div id='c3' class="container">
+                <div id="drag3" class="draggable">
+                    <span style='font-size:90px'>3</span>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        class Container {
-            static list = [];
-            static init(cfg) {
-                for (var key in cfg) {
-                    var ctx = new Container(key);
-                    Container.list.push(ctx);
-                    if (cfg[key] == '') continue;
-                    var drag = new Draggable(cfg[key]);
-                    drag.ctx = ctx;
-                    ctx.drag = drag;
-                }
-            }
-            constructor(id) {
-                this.id = id;
-                this.eleCtx = document.getElementById(id);
-            }
-        }
+        <div class="demo">
+            <div id='c4' class="container">
+                <div id="drag4" class="draggable">
+                    <span style='font-size:90px'>4</span>
+                </div>
+            </div>
+        </div>
+        <div class="demo">
+            <div id='c5' class="container">
+                <div id="drag5" class="draggable">
+                    <span style='font-size:90px'>5</span>
+                </div>
+            </div>
+        </div>
 
-        class Draggable extends IDraggable {
-            constructor(id) {
-                super(id);
-            }
-            hasNestestContainer() {
-                var ctxList = Container.list;
-                for (var i in ctxList) {
-                    if (ctxList[i].swapPos) {
-                        return ctxList[i];
-                    }
-                }
-                return null;
-            }
-            swapDraggable(drag, ctx) {
-                var ctx1 = drag.ctx;
-                var ctx2 = ctx;
-                var eleDrag1 = ctx1.drag.eleDrag;
-                var eleDrag2 = ctx2.drag.eleDrag;
-                ctx1.drag.eleDrag = eleDrag2;
-                ctx2.drag.eleDrag = eleDrag1;
-                ctx1.eleCtx.removeChild(eleDrag1);
-                ctx2.eleCtx.removeChild(eleDrag2);
-                ctx1.eleCtx.appendChild(eleDrag2);
-                ctx2.eleCtx.appendChild(eleDrag1);
-                ctx2.swapPos = false;
-                ctx2.eleCtx.style['border'] = '1px solid #000';
-            }
-        }
-
-        Container.init({ 'c1': 'drag1', 'c2': 'drag2', 'c3': 'drag3' });
-
-        var startButton = document.getElementById("startButton");
-        startButton.addEventListener("click", function () {
-            Draggable.on();
-        });
-
-        var stopButton = document.getElementById("stopButton");
-        stopButton.addEventListener("click", function () {
-            Draggable.off();
-        });
-        Draggable.on();
-    </script>
+        <script>
+            Container.init({
+                'c1': 'drag1', 'c2': 'drag2', 'c3': 'drag3'
+                , 'c4': 'drag4', 'c5': 'drag5'
+            });
+        </script>
 
 
 </body>

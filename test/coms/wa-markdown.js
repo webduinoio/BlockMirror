@@ -21,7 +21,7 @@ export class Markdown extends LitElement {
         overflow: auto;
         display: block;
         width: calc(100% - 40px);
-        height: calc(100vh - 40px);
+        height: 100%;
         overflow-x: hidden;
         padding-right: 24px;
     }
@@ -39,7 +39,7 @@ export class Markdown extends LitElement {
         if (content.startsWith("q")) {
             var row = content.substring(1);
             htmlContent = '<wa-question id="exam" idx="' + row + '" bind="window.Main"></wa-question>';
-            this.renderRoot.innerHTML = htmlContent;
+            this.content.innerHTML = htmlContent;
         }
         else if (content.endsWith(".exam")) {
             var text = await fetch(this.path + content, {})
@@ -56,13 +56,14 @@ export class Markdown extends LitElement {
                     return response.text();
                 });
             htmlContent = converter.makeHtml(text);
-            this.renderRoot.innerHTML = htmlContent;
+            this.content.innerHTML = htmlContent;
         }
     }
 
     firstUpdated() {
         var self = this;
         self.lastHash = location.hash;
+        this.content = this.renderRoot.getElementById("content");
         this.getContent(self.lastHash, location.hash);
         window.addEventListener('hashchange', function () {
             self.getContent(self.lastHash, location.hash);
@@ -71,7 +72,7 @@ export class Markdown extends LitElement {
     }
 
     render() {
-        return html`<slot></slot>`
+        return html`<div id='content'><slot></slot></div>`
     }
 }
 
