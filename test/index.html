@@ -78,7 +78,7 @@
         <div id='left-frame' style='width:30%'>
             <div id='c1' class="container">
                 <div id="drag1" class="draggable">
-                    <wa-markdown path="md/" default="index.md"></wa-markdown>
+                    <wa-markdown id='markdown' path="md/" default="index.md"></wa-markdown>
                 </div>
             </div>
         </div>
@@ -98,13 +98,15 @@
             <div style='height:30%'>
                 <div id='c3' class="container">
                     <div id="drag3" class="draggable">
-                        <div style='height: calc(100% - 40px)'>
-                            <wa-output id="output"></wa-output>
-                        </div>
-                        <div style='height:30px;padding:5px;'>
-                            <button style="width:100px;font-size:16px"
-                                onclick="document.getElementById('runPython').frontTest(window.Main.exam);">測試執行</button>
-                            <button style="width:100px;font-size:16px">提交結果</button>
+                        <div id="runArea" style="height:100%">
+                            <div style='height: calc(100% - 40px)'>
+                                <wa-output id="output"></wa-output>
+                            </div>
+                            <div style='height:30px;padding:5px;'>
+                                <button style="width:100px;font-size:16px"
+                                    onclick="document.getElementById('runPython').frontTest(window.Main.exam);">測試執行</button>
+                                <button style="width:100px;font-size:16px">提交結果</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,19 +115,6 @@
         </div>
     </div>
     <script src="js/main.js"></script>
-    <script>
-        setTimeout(function () {
-            Container.init({
-                'c1': 'drag1', 'c2': 'drag2', 'c3': 'drag3'
-            });
-            /*
-            Container.move({
-                'c1': 'drag2', 'c2': 'drag3', 'c3': 'drag1'
-            });
-            //*/
-        }, 1000);
-    </script>
-
 </body>
 
 </html>

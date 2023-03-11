@@ -14,6 +14,37 @@ class Container {
         this.id = id;
         this.eleCtx = document.getElementById(id);
     }
+    static save() {
+        var cfg = {}
+        var list = Container.list;
+        for (var i in list) {
+            var dragId = list[i].drag.eleDrag.firstElementChild.id;
+            cfg[list[i].id] = dragId;
+        }
+        console.log(JSON.stringify(cfg));
+    }
+    static load(strCfg) {
+        //strCfg = '{"c1":"cnt5","c2":"cnt4","c3":"cnt3","c4":"cnt2","c5":"cnt1"}';
+        var cfg = JSON.parse(strCfg);
+        console.log(cfg);
+        var list = Container.list;
+        var dragIds = {}
+        // remove all
+        for (var i in list) {
+            var ctx = list[i];
+            var dragId = ctx.drag.eleDrag.firstElementChild.id;
+            var eleDrag = ctx.drag.eleDrag;
+            dragIds[dragId] = eleDrag;
+            ctx.eleCtx.removeChild(eleDrag);
+        }
+        // set all
+        for (var i in list) {
+            var ctx = list[i];
+            var dragId = cfg[ctx.id];
+            ctx.drag.eleDrag = dragIds[dragId];
+            ctx.eleCtx.appendChild(dragIds[dragId]);
+        }
+    }
 }
 
 class IDraggable {
@@ -119,6 +150,7 @@ class IDraggable {
                 var ctx = self.hasNestestContainer();
                 if (ctx != null) {
                     self.swapDraggable(self, ctx);
+                    Container.save();
                     Draggable.off();
                 }
                 IDraggable.loadTmpLeftTop(self);
@@ -130,10 +162,6 @@ class IDraggable {
         this.eleTitle.addEventListener("mousedown", this.startDragEvent);
         this.body.addEventListener("mousemove", this.dragingEvent);
         this.body.addEventListener("mouseup", this.stopDragEvent);
-    }
-
-    update() {
-
     }
 
     start() {
@@ -165,6 +193,7 @@ class Draggable extends IDraggable {
     constructor(id) {
         super(id);
     }
+
     hasNestestContainer() {
         var ctxList = Container.list;
         for (var i in ctxList) {
@@ -174,6 +203,7 @@ class Draggable extends IDraggable {
         }
         return null;
     }
+
     swapDraggable(drag, ctx) {
         var ctx1 = drag.ctx;
         var ctx2 = ctx;

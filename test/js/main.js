@@ -57,6 +57,14 @@ print(year)
 
 
 class Main {
+    init() {
+        setTimeout(function () {
+            window.Main.editor = editor;
+            Container.init({
+                'c1': 'drag1', 'c2': 'drag2', 'c3': 'drag3'
+            });
+        }, 100);
+    }
     ready(name, obj) {
         console.log("Component Ready...", name);
         if (name == 'wa-range') {
@@ -70,4 +78,4 @@ class Main {
 }
 
 window.Main = new Main();
-window.Main.editor = editor;
+window.Main.init();
