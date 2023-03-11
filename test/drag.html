@@ -44,17 +44,25 @@
         <div id="box2" class="box">
             <h1><span style='font-size:164px'>2</span></h1>
         </div>
-        <div id="box3" class="box">
-            <h1><span style='font-size:164px'>3</span></h1>
-        </div>
     </div>
     <script>
-        class Box {
 
+        /**
+         * 將想要可拖拉的div套上class="box"
+         * 
+         */
+        class Box {
+            // 所有可拖拉的盒子
             static boxes = [];
+            static boxesInitPos = {};
 
             static addBox(box) {
                 Box.boxes.push(box);
+                Box.boxesInitPos[box.getBox().id] = {
+                    "x": box.getBox().offsetLeft,
+                    "y": box.getBox().offsetTop
+                }
+                window[box.getBox().id] = box;
             }
 
             static getBoxes() {
@@ -64,25 +72,87 @@
             constructor(boxId) {
                 this.swapPos = false;
                 this.isDragging = false;
-                this.isStarted = false;
                 this.eleTitle = document.createElement('div');
                 this.eleTitle.classList.add("title");
                 this.eleBox = document.getElementById(boxId);
                 this.eleBox.appendChild(this.eleTitle);
                 this.container = document.getElementsByTagName('body')[0];
-                window[this.eleBox.id] = this.eleBox;
-                // element's origin x,y (eg. client.x , client.y)
-                this.x = 0;
-                this.y = 0;
-                this.mPos = { "x": 0, "y": 0 };
-                this.originX = this.eleBox.offsetLeft;
-                this.originY = this.eleBox.offsetTop;
+                // 元素的座標資訊
+                this.pos = {
+                    // 元素擺放到畫面時的top,left預設為""
+                    "top": 0, "left": 0,
+                    // 元素擺放到畫面時的左上角 x,y 座標 (尚未拖拉前的位置)
+                    "offsetLeft": this.eleBox.offsetLeft,
+                    "offsetTop": this.eleBox.offsetTop
+                };
                 this.info();
             }
 
-            info(evt) {
-                console.log(this.eleBox.id,
-                    "ox:", this.originX, "oy:", this.originY);
+            startDrag() {
+                var self = this;
+                this.getTitle().style.display = "block";
+
+                // mousedown event
+                this.startDragEvent = function (evt) {
+                    evt.preventDefault();
+                    if (evt.srcElement != self.eleTitle) {
+                        return;
+                    }
+                    self.isDragging = true;
+                    //紀錄滑鼠按下的座標位置(畫面x,y)
+                    self.pos['clientX'] = evt.clientX;
+                    self.pos['clientY'] = evt.clientY;
+                    self.pos['_top'] = self.pos['top'];
+                    self.pos['_left'] = self.pos['left'];
+                    self.info(evt);
+                };
+
+                // mousemove event
+                this.dragingEvent = function (evt) {
+                    if (self.isDragging) {
+                        // Calculate the new position of the box
+                        var dx = evt.clientX - self.pos['clientX'];
+                        var dy = evt.clientY - self.pos['clientY'];
+                        self.pos['top'] += dy;
+                        self.pos['left'] += dx;
+                        // Update the position of the box
+                        self.setBoxLeftTop(self.pos['left'], self.pos['top']);
+                        self.pos['clientX'] = evt.clientX;
+                        self.pos['clientY'] = evt.clientY;
+                        self.checkNearestBox(self, 100);
+                    }
+                }
+                this.stopDragEvent = function (evt) {
+                    evt.preventDefault();
+                    if (self.isDragging) {
+                        self.info(evt);
+                        if (self.hasSwapBox()) {
+                            self.checkSwapPos(self);
+                        } else {
+                            console.log("no swap,restore");
+                            self.pos['top'] = self.pos['_top'];
+                            self.pos['left'] = self.pos['_left'];
+                            self.setBoxLeftTop(self.pos['left'], self.pos['top']);
+                        }
+                        delete self.pos['clientX'];
+                        delete self.pos['clientY'];
+                        delete self.pos['_left'];
+                        delete self.pos['_top'];
+                    }
+                    self.isDragging = false;
+                };
+                this.getTitle().addEventListener("mousedown", this.startDragEvent);
+                self.container.addEventListener("mousemove", this.dragingEvent);
+                self.container.addEventListener("mouseup", this.stopDragEvent);
+            }
+
+            swapOffsetLeftTop(aBox, bBox) {
+                var x = aBox.pos['offsetLeft'];
+                var y = aBox.pos['offsetTop'];
+                aBox.pos['offsetLeft'] = bBox.pos['offsetLeft'];
+                aBox.pos['offsetTop'] = bBox.pos['offsetTop'];
+                bBox.pos['offsetLeft'] = x;
+                bBox.pos['offsetTop'] = y;
             }
 
             checkSwapPos(self) {
@@ -90,37 +160,22 @@
                 for (var i in boxList) {
                     if (boxList[i].swapPos) {
                         boxList[i].swapPos = false;
-                        var dx = self.originX - boxList[i].originX;
-                        var dy = self.originY - boxList[i].originY;
-                        self.eleBox.style.left = -1 * dx + "px";
-                        self.eleBox.style.top = -1 * dy + "px";
-                        self.originLeft = -1 * dx + "px";
-                        self.originTop = -1 * dy + "px";
-                        self.originX = -1 * dx;
-                        self.originY = -1 * dy;
-                        boxList[i].eleBox.style.left = 1 * dx + "px";
-                        boxList[i].eleBox.style.top = 1 * dy + "px";
-                        boxList[i].originLeft = 1 * dx + "px";
-                        boxList[i].originTop = 1 * dy + "px";
-                        boxList[i].originX = 1 * dx;
-                        boxList[i].originY = 1 * dy;
+                        var dx = self.pos['offsetLeft'] - boxList[i].pos['offsetLeft'];
+                        var dy = self.pos['offsetTop'] - boxList[i].pos['offsetTop'];
+                        //self.swapOffsetLeftTop(boxList[i],self);
+                        self.pos['top'] = -dy;
+                        self.pos['left'] = -dx;
+                        boxList[i].pos['top'] = dy;
+                        boxList[i].pos['left'] = dx;
+
+                        self.setBoxLeftTop(-dx, -dy);
+                        boxList[i].setBoxLeftTop(dx, dy);
+
                         boxList[i].eleTitle.style['border'] = '0px';
-                        console.log("Swap..",
-                            self.originX, self.originY,
-                            boxList[i].originX, boxList[i].originY);
+                        console.log("swap ", self.eleBox.id, boxList[i].eleBox.id);
                         break;
                     }
                 }
-            }
-
-            hasSwapBox() {
-                var boxList = Box.getBoxes();
-                for (var i in boxList) {
-                    if (boxList[i].swapPos) {
-                        return true;
-                    }
-                }
-                return false;
             }
 
             checkNearestBox(self, distance) {
@@ -145,65 +200,8 @@
                 }
             }
 
-            startDrag() {
-                var self = this;
-                this.isStarted = true;
-                // Show the titlebars
-                this.getTitle().style.display = "block";
-                // Add event listeners to the titlebars
-                this.startDragEvent = function (evt) {
-                    if (evt.srcElement != self.eleTitle) {
-                        return;
-                    }
-                    self.info(evt);
-                    evt.preventDefault();
-                    self.originLeft = self.getBox().style.left;
-                    self.originTop = self.getBox().style.top;
-                    self.isDragging = true;
-                    self.mPos.x = evt.clientX;
-                    self.mPos.y = evt.clientY;
-                    self.x = self.originX;
-                    self.y = self.originY;
-                };
-                this.dragingEvent = function (evt) {
-                    if (self.isDragging) {
-                        // Calculate the new position of the box
-                        var dx = evt.clientX - self.mPos.x;
-                        var dy = evt.clientY - self.mPos.y;
-                        self.x += dx;
-                        self.y += dy;
-                        // Update the position of the box
-                        self.getBox().style.top = self.y + "px";
-                        self.getBox().style.left = self.x + "px";
-                        self.mPos.x = evt.clientX;
-                        self.mPos.y = evt.clientY;
-                        self.checkNearestBox(self, 100);
-                    }
-                }
-                this.stopDragEvent = function (evt) {
-                    evt.preventDefault();
-                    if (self.isDragging) {
-                        self.info(evt);
-                        if (!self.hasSwapBox()) {
-                            console.log("no swap,restore");
-                            self.getBox().style.left = self.originLeft;
-                            self.getBox().style.top = self.originTop;
-                            self.mPos = { "x": 0, "y": 0 };
-                            self.x = self.y = 0;
-                        } else {
-                            self.checkSwapPos(self);
-                        }
-                    }
-                    self.isDragging = false;
-                };
-                this.getTitle().addEventListener("mousedown", this.startDragEvent);
-                self.container.addEventListener("mousemove", this.dragingEvent);
-                self.container.addEventListener("mouseup", this.stopDragEvent);
-            }
-
             stopDrag() {
                 var self = this;
-                this.isStarted = false;
                 this.getTitle().style.display = "none";
                 var boxList = Box.getBoxes();
                 this.getTitle().removeEventListener("mousedown", this.startDragEvent);
@@ -211,9 +209,30 @@
                 self.container.removeEventListener("mouseup", this.stopDragEvent);
             }
 
+            hasSwapBox() {
+                var boxList = Box.getBoxes();
+                for (var i in boxList) {
+                    if (boxList[i].swapPos) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            info(evt) {
+                console.log(this.eleBox.id, this.pos);
+                //console.log(Box.boxesInitPos);
+            }
+
             getTitle() {
                 return this.eleTitle;
             }
+
+            setBoxLeftTop(x, y) {
+                this.getBox().style.left = x + 'px';
+                this.getBox().style.top = y + 'px';
+            }
+
             getBox() {
                 return this.eleBox;
             }
@@ -221,7 +240,8 @@
 
         Box.addBox(new Box('box1'));
         Box.addBox(new Box('box2'));
-        Box.addBox(new Box('box3'));
+        console.log("init...", Box.boxesInitPos);
+        //Box.addBox(new Box('box3'));
         var boxes = Box.getBoxes();
 
         var startButton = document.getElementById("startButton");
