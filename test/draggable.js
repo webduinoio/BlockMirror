@@ -49,6 +49,8 @@ class Container {
 
 class IDraggable {
     static list = [];
+    static distance = 200;
+
     static saveTmpLeftTop(draggable) {
         var left = draggable.eleTitle.style.left;
         var top = draggable.eleTitle.style.top;
@@ -94,7 +96,7 @@ class IDraggable {
     }
 
     checkNearestContainer(self) {
-        var distance = 100;
+        var distance = IDraggable.distance;
         var ctxList = Container.list;
         for (var i in ctxList) {
             var ctx = ctxList[i];

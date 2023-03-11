@@ -20,7 +20,7 @@ export class Markdown extends LitElement {
         margin-right: 20px;
         overflow: auto;
         display: block;
-        width: calc(100% - 40px);
+        width: calc(100% - 44px);
         height: 100%;
         overflow-x: hidden;
         padding-right: 24px;
