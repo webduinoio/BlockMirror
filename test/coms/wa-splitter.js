@@ -14,7 +14,7 @@ export class Splitter extends LitElement {
     }
 
     static barWidthPx = 5;
-    
+
     static properties = {
         left: {}
     };
@@ -29,43 +29,47 @@ export class Splitter extends LitElement {
     }`]
 
     firstUpdated() {
+        var self = this;
         let isDragging = false;
-        let startX, startWidth;
+        self.startX = '';
+        self.startWidth = '';
 
         const splitter = this.renderRoot.querySelector(".splitter");
         let ele = this.parentElement;
-        let leftFrame = ele.children[0];
-        let rightFrame = ele.children[2];
-        leftFrame.style.width = this.left;
-        var calWidth = leftFrame.offsetWidth + Splitter.barWidthPx;
-
-        console.log("calWidth:",calWidth);
-        rightFrame.style.width = `calc(100% - ${calWidth}px)`;
+        self.leftFrame = ele.children[0];
+        self.rightFrame = ele.children[2];
+        self.leftFrame.style.width = this.left;
+        var calWidth = self.leftFrame.offsetWidth + Splitter.barWidthPx;
+        self.rightFrame.style.width = `calc(100% - ${calWidth}px)`;
         editor.blockEditor.resized();
 
         splitter.addEventListener("mousedown", (e) => {
             isDragging = true;
-            startX = e.clientX;
-            startWidth = leftFrame.offsetWidth;
+            self.startX = e.clientX;
+            self.startWidth = self.leftFrame.offsetWidth;
         });
         splitter.addEventListener("touchstart", (e) => {
             isDragging = true;
-            startX = e.clientX;
-            startWidth = leftFrame.offsetWidth;
+            self.startX = e.clientX;
+            self.startWidth = self.leftFrame.offsetWidth;
         });
 
         document.addEventListener("mousemove", (e) => {
             if (!isDragging) return;
-            const diffX = e.clientX - startX;
-            leftFrame.style.width = startWidth + diffX + "px";
-            var calWidth = leftFrame.offsetWidth + Splitter.barWidthPx;
-            rightFrame.style.width = `calc(100% - ${calWidth}px)`;
-            editor.blockEditor.resized();
+            const diffX = e.clientX - self.startX;
+            self.updateWidth(diffX);
         });
 
         document.addEventListener("mouseup", (e) => {
             isDragging = false;
         });
+    }
+
+    updateWidth(diffX) {
+        this.leftFrame.style.width = this.startWidth + diffX + "px";
+        var calWidth = this.leftFrame.offsetWidth + Splitter.barWidthPx;
+        this.rightFrame.style.width = `calc(100% - ${calWidth}px)`;
+        editor.blockEditor.resized();
     }
 
     render() {
