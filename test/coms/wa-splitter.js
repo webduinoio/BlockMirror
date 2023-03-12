@@ -10,12 +10,19 @@ export class Splitter extends LitElement {
 
     constructor() {
         super();
+        this.left = "30%";
     }
+
+    static barWidthPx = 5;
+    
+    static properties = {
+        left: {}
+    };
 
     static styles = [css`
     .splitter {
         float: left;
-        width: 3px;
+        width: ${Splitter.barWidthPx}px;
         background-color: #9f9f9f;
         cursor: col-resize;
         height: calc(100vh - 40px)
@@ -29,8 +36,11 @@ export class Splitter extends LitElement {
         let ele = this.parentElement;
         let leftFrame = ele.children[0];
         let rightFrame = ele.children[2];
-        leftFrame.style.width = startWidth + "px";
-        rightFrame.style.width = `calc(100% - ${leftFrame.offsetWidth + 3}px)`;
+        leftFrame.style.width = this.left;
+        var calWidth = leftFrame.offsetWidth + Splitter.barWidthPx;
+
+        console.log("calWidth:",calWidth);
+        rightFrame.style.width = `calc(100% - ${calWidth}px)`;
         editor.blockEditor.resized();
 
         splitter.addEventListener("mousedown", (e) => {
@@ -48,7 +58,8 @@ export class Splitter extends LitElement {
             if (!isDragging) return;
             const diffX = e.clientX - startX;
             leftFrame.style.width = startWidth + diffX + "px";
-            rightFrame.style.width = `calc(100% - ${leftFrame.offsetWidth + 3}px)`;
+            var calWidth = leftFrame.offsetWidth + Splitter.barWidthPx;
+            rightFrame.style.width = `calc(100% - ${calWidth}px)`;
             editor.blockEditor.resized();
         });
 

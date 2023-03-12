@@ -57,11 +57,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
 
     <script src="draggable.js"></script>
-
-    <!--
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/extensions/showdown-highlight/showdown-highlight.min.js"></script>
-    -->
 </head>
 
 <body>
@@ -75,14 +70,14 @@
     </wa-menubar>
 
     <div id="app-content">
-        <div id='left-frame' style='width:30%'>
+        <div id='left-frame'>
             <div id='c1' class="container">
                 <div id="drag1" class="draggable">
                     <wa-markdown id='markdown' path="md/" default="index.md"></wa-markdown>
                 </div>
             </div>
         </div>
-        <wa-splitter></wa-splitter>
+        <wa-splitter left="30%"></wa-splitter>
         <div id="right-frame">
             <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
             <div style='height:70%'>

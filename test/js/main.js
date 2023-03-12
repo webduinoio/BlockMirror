@@ -17,7 +17,7 @@ new ResizeObserver(function () {
 }).observe(parentElement);
 
 // editor autocomplete
-/*
+//*
 const ignore = ['', '#', '!', '-', '=', '@', '$', '%', '&', '+', ';', '(', ')', '*'];
 const ignoreToken = (text) => {
     if (text && text[0]) {
@@ -36,7 +36,7 @@ editor.textEditor.codeMirror.on("change", function (editor, change) {
     if (change.origin == "+input") {
         var text = change.text;
         if (!ignoreToken(text))
-            setTimeout(function () { editor.execCommand("autocomplete"); }, 500);
+            setTimeout(function () { editor.execCommand("autocomplete"); }, 700);
     }
 });
 //*/
@@ -55,9 +55,9 @@ print(year)
 `);
 */
 
-
 class Main {
     init() {
+        // 改成所有元件ready再初始化,不要用 setTimeout
         setTimeout(function () {
             window.Main.editor = editor;
             Container.init({
