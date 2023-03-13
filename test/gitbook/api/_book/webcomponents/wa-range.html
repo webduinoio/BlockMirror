@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>5.拖拉左右面板 · GitBook</title>
+        <title>9.數字拉霸 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="wa-split-v.html" />
     
-    
-    <link rel="prev" href="wa-question.html" />
+    <link rel="prev" href="wa-ai-chat-dialog.html" />
     
 
     </head>
@@ -200,7 +198,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3.5" data-path="wa-splitter.html">
+        <li class="chapter " data-level="1.3.5" data-path="wa-splitter.html">
             
                 <a href="wa-splitter.html">
             
@@ -252,7 +250,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.9" data-path="wa-range.html">
+        <li class="chapter active" data-level="1.3.9" data-path="wa-range.html">
             
                 <a href="wa-range.html">
             
@@ -313,7 +311,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >5.拖拉左右面板</a>
+        <a href=".." >9.數字拉霸</a>
     </h1>
 </div>
 
@@ -328,41 +326,22 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h6 id="tags-egamelit">tags: <code>egame</code>,<code>lit</code></h6>
-<h1 id="&#x62D6;&#x62C9;&#x5DE6;&#x53F3;&#x9762;&#x677F;">&#x62D6;&#x62C9;&#x5DE6;&#x53F3;&#x9762;&#x677F;</h1>
+                                <h6 id="tags-egame-lit">tags: <code>egame</code> <code>lit</code></h6>
+<h1 id="crud-&#x8A66;&#x7B97;&#x8868;">CRUD &#x8A66;&#x7B97;&#x8868;</h1>
 <h2 id="1&#x529F;&#x80FD;">1.&#x529F;&#x80FD;</h2>
-<p>&#x5728;&#x5169;&#x500B; div (&#x5DE6;&#x53F3;) &#x4E2D;&#x9593;&#x63D2;&#x5165;&#x4E00;&#x500B;&#x62C9;&#x5427;&#xFF0C;&#x53EF;&#x4EE5;&#x8ABF;&#x6574;&#x5169;&#x500B; div &#x5BEC;&#x5EA6;</p>
+<p>&#x63D0;&#x4F9B;&#x62D6;&#x62C9;&#x6539;&#x8B8A;&#x6578;&#x5B57; (&#x76EE;&#x524D;&#x662F;&#x7528;&#x4F86;&#x8ABF;&#x6574; codeMirror &#x5B57;&#x578B;&#x5927;&#x5C0F;)</p>
 <h2 id="2&#x756B;&#x9762;&#x9577;&#x76F8;">2.&#x756B;&#x9762;&#x9577;&#x76F8;</h2>
-<p><img src="https://md.webduino.io/uploads/upload_d69040417869b9c4f3d05b2cb9e262ab.png" alt="" width="45%"> <img src="https://md.webduino.io/uploads/upload_aa114a8a4121d56bf0289352816412b9.png" alt="" width="45%"></p>
-<h2 id="3&#x4F7F;&#x7528;&#x7BC4;&#x4F8B;-&#x9023;&#x7D50;">3.&#x4F7F;&#x7528;&#x7BC4;&#x4F8B; <a href="https://webduinoio.github.io/BlockMirror/test/coms/wa-splitter.html" target="_blank">&#x9023;&#x7D50;</a></h2>
-<pre><code class="lang-html">&#x5DE6;&#x53F3;&#x9762;&#x677F;&#x6372;&#x8EF8;&#x62D6;&#x62C9;&#x6E2C;&#x8A66;
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;content&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;b1&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">wa-splitter</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">wa-splitter</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;b2&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<p><img src="https://md.webduino.io/uploads/upload_5adb5c4e01b4ef0b7ee03fce264ffcec.png" alt="" width=""></p>
+<h2 id="3&#x4F7F;&#x7528;&#x7BC4;&#x4F8B;">3.&#x4F7F;&#x7528;&#x7BC4;&#x4F8B;</h2>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">wa-range</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;range&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;16px&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">wa-range</span>&gt;</span>
 </code></pre>
 <h2 id="4&#x4F7F;&#x7528;&#x8AAA;&#x660E;">4.&#x4F7F;&#x7528;&#x8AAA;&#x660E;</h2>
-<p>&#x8981;&#x6CE8;&#x610F; css &#x8ABF;&#x6574;&#xFF0C;&#x6B64;&#x7BC4;&#x4F8B;&#x8ABF;&#x6574;&#x5982;&#x4E0B;</p>
-<pre><code class="lang-css=">#content {
-    height: 420px;
-    width: 420px;
-}
-
-#b1 {
-    float: left;
-    width: 50%;
-    height: 100%;
-    background-color: aqua;
-}
-
-#b2 {
-    float: left;
-    width: calc(50% - 3px);
-    height: 100%;
-    background-color: antiquewhite;
-}
-</code></pre>
+<p>&#x5143;&#x4EF6;&#x521D;&#x59CB;&#x5316;&#x5F8C;&#xFF0C;&#x6703;&#x547C;&#x53EB; window.Main.ready &#x901A;&#x77E5;&#x5143;&#x4EF6;&#x521D;&#x59CB;&#x5316;&#x5B8C;&#x6210;
+&#x8A3B;&#x518A;&#x5143;&#x4EF6; onSlider(...) &#x65B9;&#x6CD5;&#x5C31;&#x53EF;&#x4EE5;&#x5373;&#x6642;&#x6536;&#x5230;&#x8ABF;&#x6574;&#x7684;&#x503C;</p>
+<p>wa-range &#x5143;&#x4EF6;&#x521D;&#x59CB;&#x5316;
+<img src="https://md.webduino.io/uploads/upload_7f4cd35e9086895c22c497a596a84ea3.png" alt="" width="70%"></p>
+<p>&#x53C3;&#x8003;Main.js &#x7A0B;&#x5F0F;72&#x884C;
+<img src="https://md.webduino.io/uploads/upload_9cb326262957eca78d4da38e2ed1478f.png" alt="" width=""></p>
 
                                 
                                 </section>
@@ -390,14 +369,10 @@
 
             
                 
-                <a href="wa-question.html" class="navigation navigation-prev " aria-label="Previous page: 4.顯示程式題目">
+                <a href="wa-ai-chat-dialog.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 8.AI隨身助教">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="wa-split-v.html" class="navigation navigation-next " aria-label="Next page: 6.拖拉上下面板">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -406,7 +381,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"5.拖拉左右面板","level":"1.3.5","depth":2,"next":{"title":"6.拖拉上下面板","level":"1.3.6","depth":2,"path":"webcomponents/wa-split-v.md","ref":"webcomponents/wa-split-v.md","articles":[]},"previous":{"title":"4.顯示程式題目","level":"1.3.4","depth":2,"path":"webcomponents/wa-question.md","ref":"webcomponents/wa-question.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"webcomponents/wa-splitter.md","mtime":"2023-03-13T05:32:46.291Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2023-03-13T06:47:07.225Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"9.數字拉霸","level":"1.3.9","depth":2,"next":{"title":"三、Vue元件","level":"1.4","depth":1,"ref":"","articles":[]},"previous":{"title":"8.AI隨身助教","level":"1.3.8","depth":2,"path":"webcomponents/wa-ai-chat-dialog.md","ref":"webcomponents/wa-ai-chat-dialog.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"webcomponents/wa-range.md","mtime":"2023-03-13T06:45:24.473Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2023-03-13T06:47:07.225Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

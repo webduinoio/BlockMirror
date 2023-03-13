@@ -12,5 +12,8 @@
   * [4.顯示程式題目](webcomponents/wa-question.md)
   * [5.拖拉左右面板](webcomponents/wa-splitter.md)
   * [6.拖拉上下面板](webcomponents/wa-split-v.md)
+  * [7.執行Python程式](webcomponents/wa-run-python.md)
+  * [8.AI隨身助教](webcomponents/wa-ai-chat-dialog.md)
+  * [9.數字拉霸](webcomponents/wa-range.md)
 
 * [三、Vue元件]()

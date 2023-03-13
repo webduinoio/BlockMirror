@@ -37,7 +37,3 @@ CRUD 試算表
 ## 4.使用說明
 - 需搭配 wa-crud-col 使用
 - show 可以預設要不要顯示欄位
-
-
-## <wa-run-python></wa-run-python>
-## <wa-ai-chat-dialog></wa-ai-chat-dialog>
