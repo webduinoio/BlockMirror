@@ -49,7 +49,7 @@ class Container {
 
 class IDraggable {
     static list = [];
-    static distance = 200;
+    static distance = 100;
 
     static saveTmpLeftTop(draggable) {
         var left = draggable.eleTitle.style.left;
@@ -85,11 +85,11 @@ class IDraggable {
     }
 
     createTitleToBody() {
+        console.log("createTitleToBody");
         var eleTitle = document.createElement('div');
         eleTitle.classList.add("title");
-        eleTitle.style['width'] = this.eleDrag.offsetWidth + "px";
-        eleTitle.style['height'] = "32px";
-        //eleTitle.style['height'] = this.eleDrag.offsetHeight + "px";
+        eleTitle.style['width'] = (this.eleDrag.offsetWidth - 14) + "px";
+        eleTitle.style['height'] = (this.eleDrag.offsetHeight - 14) + "px";
         this.body = document.getElementsByTagName('body')[0];
         this.body.appendChild(eleTitle);
         return eleTitle;
@@ -100,23 +100,42 @@ class IDraggable {
         var ctxList = Container.list;
         for (var i in ctxList) {
             var ctx = ctxList[i];
-            var x1 = self.eleTitle.offsetLeft;
-            var y1 = self.eleTitle.offsetTop;
-            var x2 = ctx.eleCtx.offsetLeft;
-            var y2 = ctx.eleCtx.offsetTop;
+            var x1 = self.eleTitle.offsetLeft + self.eleTitle.offsetWidth / 2;
+            var y1 = self.eleTitle.offsetTop + self.eleTitle.offsetHeight / 2;
+            var x2 = ctx.eleCtx.offsetLeft + self.eleTitle.offsetWidth / 2;
+            var y2 = ctx.eleCtx.offsetTop + self.eleTitle.offsetHeight / 2;
             var calDistance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
             if (calDistance <= distance) {
-                ctx.eleCtx.style['border'] = '2px solid #f47';
+                ctx.eleCtx.style['border'] = '4px dashed #e00';
                 ctx.swapPos = true;
             } else {
-                ctx.eleCtx.style['border'] = '0px solid #000';
+                ctx.eleCtx.style['border'] = '0px dashed #000';
                 ctx.swapPos = false;
             }
         }
     }
 
+    restoreContainerWH() {
+        const elements = document.querySelectorAll('.container');
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].style.width = '100%';
+            elements[i].style.height = '100%';
+        }
+    }
+    updateContainer(size) {
+        const elements = document.querySelectorAll('.container');
+        console.log("updateContainer...");
+        for (let i = 0; i < elements.length; i++) {
+            var w = elements[i].offsetWidth;
+            var h = elements[i].offsetHeight;
+            elements[i].style.width = (w + size) + 'px';
+            elements[i].style.height = (h + size) + 'px';
+        }
+    }
+
     startDrag() {
         var self = this;
+        self.updateContainer(-2);
         // mousedown event
         this.startDragEvent = function (evt) {
             evt.preventDefault();
@@ -158,7 +177,9 @@ class IDraggable {
                 IDraggable.loadTmpLeftTop(self);
                 delete self.tmpClientX;
                 delete self.tmpClientY;
+
             }
+            self.restoreContainerWH();
             self.isDragging = false;
         };
         this.eleTitle.addEventListener("mousedown", this.startDragEvent);
