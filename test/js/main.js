@@ -15,7 +15,6 @@ new ResizeObserver(function () {
     editor.textEditor.resizeResponsively();
     editor.refresh();
 }).observe(parentElement);
-
 // editor autocomplete
 //*
 const ignore = ['', '#', '!', '-', '=', '@', '$', '%', '&', '+', ';', '(', ')', '*'];
@@ -31,7 +30,6 @@ const ignoreToken = (text) => {
     }
     return false;
 };
-
 editor.textEditor.codeMirror.on("change", function (editor, change) {
     if (change.origin == "+input") {
         var text = change.text;
@@ -45,6 +43,8 @@ editor.addChangeListener(function (event) {
     console.log('Change! Better save:', event.value);
     // lint custom ref: https://juejin.cn/post/7127282061211074573
 });
+
+
 
 // set python code
 /*
