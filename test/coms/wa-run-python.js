@@ -78,8 +78,9 @@ export class RunPython extends LitElement {
         function convertCode(code) {
             var imp = 'import js\nimport asyncio\n';
             var convertCode = imp +
-                code.replace(/input()\(/g, 'str(await js.window.Main.input()');
-            //console.log("=========\n",convertCode);
+                //code.replace(/input()\(/g, 'str(await js.window.Main.input()');
+                code.replaceAll(/input\(/g, 'await js.window.Main.input(');
+            console.log("=========\n",convertCode);
             return convertCode;
         }
 

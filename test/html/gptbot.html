@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.1.0/paho-mqtt.min.js"></script>
+    <script src="../js/mqttapp.js"></script>
+    <style>
+        body {
+            margin: 0px;
+        }
+
+        .txt-content {
+            width: calc(100% - 9px);
+            height: calc(100vh - 64px);
+            font-size: 1.2em;
+            margin: 3px;
+        }
+
+        .send {
+            margin: 6px;
+            width: 50px;
+            height: 32px;
+        }
+    </style>
+</head>
+
+<body>
+    <button class='send' onclick="send()">Send</button>
+    <div class="txt-content">
+        <textarea id="show" class='txt-content' id="messageInput" cols="50"></textarea>
+    </div>
+
+    <script>
+        function send() {
+            app.publish("gptbot/python", show.value);
+        }
+        function appendToShow(str) {
+            var cnt = show.value;
+            cnt = cnt + str + "\n";
+            show.value = cnt;
+            try{
+            setCode();
+            }catch(e){}
+        }
+        function setCode() {
+            const pattern = /```.*\n([\s\S]+?)\n```/; // 設置正則表達式模式
+            const result = pattern.exec(show.value)[1]; // 提取文字區間內的文字
+            //console.log(result);
+            parent.editor.setCode(result);// 輸出提取結果
+        }
+        const app = new MQTTApp();
+        (async function () {
+            await app.init('gptbot/python', appendToShow);
+        })();
+    </script>
+</body>
+
+</html>
