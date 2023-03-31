@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        svg {
+            fill: #222;
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn {
+            transition: all 0.5s ease;
+            cursor: pointer;
+            color: #333;
+            float: left;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            width: 70px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            color: #222;
+        }
+
+        .btn svg+span {
+            margin-left: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="button" class='btn' onclick="changeMode()">
+        <svg id="icon" viewBox="0 0 24 24">
+            <path id="path"
+                d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
+            <path d="M0 0h24v24H0z" fill="none" />
+        </svg>
+        <span id="text">程式</span>
+    </div>
+
+    <script>
+        let currentMode = 0;
+
+        function changeMode() {
+            currentMode += 1;
+            if (currentMode > 2) {
+                currentMode = 0;
+            }
+            console.log(currentMode);
+            updateButton();
+        }
+
+        function updateButton() {
+            let button = document.getElementById("button");
+            let icon = document.getElementById("icon");
+            let path = document.getElementById("path");
+            let text = document.getElementById("text");
+            if (currentMode === 0) {
+                path.setAttribute("d", "M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z");
+                text.innerHTML = "程式";
+            } else if (currentMode === 1) {
+                path.setAttribute("d", "M4 4H20V6H4V4ZM4 18H20V20H4V18ZM4 10H20V14H4V10Z");
+                text.innerHTML = "積木";
+            } else {
+                path.setAttribute("d", "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z");
+                text.innerHTML = "分割";
+            }
+        }
+    </script>
+</body>
+
+</html>

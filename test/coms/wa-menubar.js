@@ -10,6 +10,7 @@ export class MenuBar extends LitElement {
 
     constructor() {
         super();
+        this.currentMode = 0;
     }
 
     static styles = [css`
@@ -22,7 +23,7 @@ export class MenuBar extends LitElement {
         z-index: 100;
     }
     .toolMenu {
-        width:480px;
+        width:150px;
         float: right;
         box-sizing: border-box;
         font-size: 15px;
@@ -60,7 +61,34 @@ export class MenuBar extends LitElement {
   `];
 
     firstUpdated() {
+        var self = this;
+        let button = this.renderRoot.querySelector("#button");
+        button.addEventListener("click", function () {
+            self.changeMode();
+        });
+        this.changeMode();
+    }
 
+    changeMode() {
+        let path = this.renderRoot.querySelector("#path");
+        let text = this.renderRoot.querySelector("#text");
+        switch (++this.currentMode % 3) {
+            case 0:
+                editor.setMode('text');
+                path.setAttribute("d", "M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z");
+                text.innerHTML = "程式";
+                break;
+            case 1:
+                editor.setMode('block');
+                path.setAttribute("d", "M4 4H20V6H4V4ZM4 18H20V20H4V18ZM4 10H20V14H4V10Z");
+                text.innerHTML = "積木";
+                break;
+            case 2:
+                editor.setMode('split');
+                path.setAttribute("d", "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z");
+                text.innerHTML = "分割";
+                break;
+        }
     }
 
     render() {
@@ -71,32 +99,14 @@ export class MenuBar extends LitElement {
         </div>
         <div style="padding-top: 10px;">
             <div class="toolMenu">
-                <div class='btn' onclick="editor.setMode('text');">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-                        <path d="M0 0h24v24H0z" fill="none" />
-                    </svg>
-                    <span>程式</span>
-                </div>
-                <div class='btn' onclick="editor.setMode('block');">
-                    <svg viewBox="0 0 24 24">
-                        <rect x="3" y="3" width="6" height="6" />
-                        <rect x="13" y="3" width="6" height="6" />
-                        <rect x="3" y="13" width="6" height="6" />
-                        <rect x="13" y="13" width="6" height="6" />
-                        <path d="M0 0h24v24H0z" fill="none" />
-                    </svg>
-                    <span>積木</span>
-                </div>
-                <div class='btn' onclick="editor.setMode('split');">
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z" />
-                        <path d="M0 0h24v24H0z" fill="none" />
-                    </svg>
-                    <span>分割</span>
-                </div>
+            <div id="button" class='btn'>
+                <svg id="icon" viewBox="0 0 24 24">
+                    <path id="path"
+                        d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
+                    <path d="M0 0h24v24H0z" fill="none" />
+                </svg>
+                <span id="text">程式</span>
+            </div>
                 <slot></slot>
             </div>
         </div>

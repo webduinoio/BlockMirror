@@ -55,10 +55,10 @@
 
 <body>
     <wa-menubar id="menubar">
-        <wa-range id="range" value="16px"></wa-range>
         <wa-run-python id='runPython' console="output"></wa-run-python>
-        <wa-ai-chat-dialog>詢問</wa-ai-chat-dialog>
         <!--
+        <wa-range id="range" value="16px"></wa-range>
+        <wa-ai-chat-dialog>詢問</wa-ai-chat-dialog>
         <button onclick="Draggable.on()">Set</button>
         -->
     </wa-menubar>
@@ -88,14 +88,7 @@
                 <div id='c3' class="container">
                     <div id="drag3" class="draggable">
                         <div id="runArea" style="height:100%">
-                            <div style='height: calc(100% - 40px)'>
-                                <wa-output id="output"></wa-output>
-                            </div>
-                            <div style='height:30px;padding:5px;'>
-                                <button style="width:100px;font-size:16px"
-                                    onclick="document.getElementById('runPython').frontTest(window.Main.exam);">測試執行</button>
-                                <button style="width:100px;font-size:16px">提交結果</button>
-                            </div>
+                            <wa-output id="output"></wa-output>
                         </div>
                     </div>
                 </div>

@@ -185,8 +185,7 @@ export class RunPython extends LitElement {
         return html`
         <div id='run' class='btn'>
         <svg id='icon' viewBox="0 0 24 24">
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 22V2L19 12L3 22Z" fill="currentColor"/>
         </svg>
         <span>執行</span>
         </div>
