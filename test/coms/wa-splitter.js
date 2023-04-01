@@ -26,7 +26,19 @@ export class Splitter extends LitElement {
         background-color: #9f9f9f;
         cursor: col-resize;
         height: calc(100vh - 40px)
-    }`]
+    }
+    `]
+
+    createOverlayDiv() {
+        var self = this;
+        self.overlay = document.createElement('div');
+        self.overlay.style['position'] = 'absolute';
+        self.overlay.style['top'] = '0';
+        self.overlay.style['left'] = '0';
+        self.overlay.style['width'] = '30%';
+        self.overlay.style['height'] = '100%';
+        self.leftFrame.appendChild(self.overlay);
+    }
 
     firstUpdated() {
         var self = this;
@@ -39,6 +51,7 @@ export class Splitter extends LitElement {
         self.leftFrame = ele.children[0];
         self.rightFrame = ele.children[2];
         self.leftFrame.style.width = this.left;
+
         var calWidth = self.leftFrame.offsetWidth + Splitter.barWidthPx;
         self.rightFrame.style.width = `calc(100% - ${calWidth}px)`;
         editor.blockEditor.resized();
@@ -47,21 +60,22 @@ export class Splitter extends LitElement {
             isDragging = true;
             self.startX = e.clientX;
             self.startWidth = self.leftFrame.offsetWidth;
+            self.createOverlayDiv();
         });
         splitter.addEventListener("touchstart", (e) => {
             isDragging = true;
             self.startX = e.clientX;
             self.startWidth = self.leftFrame.offsetWidth;
         });
-
         document.addEventListener("mousemove", (e) => {
             if (!isDragging) return;
             const diffX = e.clientX - self.startX;
             self.updateWidth(diffX);
         });
-
         document.addEventListener("mouseup", (e) => {
             isDragging = false;
+            self.overlay.parentNode.removeChild(self.overlay);
+            self.overlay = null;
         });
     }
 
@@ -69,6 +83,7 @@ export class Splitter extends LitElement {
         this.leftFrame.style.width = this.startWidth + diffX + "px";
         var calWidth = this.leftFrame.offsetWidth + Splitter.barWidthPx;
         this.rightFrame.style.width = `calc(100% - ${calWidth}px)`;
+        this.overlay.style.width = `${calWidth}px`;
         editor.blockEditor.resized();
     }
 
