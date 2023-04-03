@@ -10,7 +10,7 @@ export class MenuBar extends LitElement {
 
     constructor() {
         super();
-        this.currentMode = 0;
+        this.currentMode = 2;
     }
 
     static styles = [css`
@@ -23,7 +23,7 @@ export class MenuBar extends LitElement {
         z-index: 100;
     }
     .toolMenu {
-        width:150px;
+        width:220px;
         float: right;
         box-sizing: border-box;
         font-size: 15px;

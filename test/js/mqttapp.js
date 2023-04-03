@@ -60,10 +60,10 @@ class MQTTApp {
     async init(topic, cb) {
         await this.connect();
         this.subscribe(topic + "_cb", function (msg) {
-            cb(msg);
+            cb(msg, false);
         });
         this.subscribe(topic + "_end", function (msg) {
-            cb(msg);
+            cb(msg, true);
         });
     }
 }

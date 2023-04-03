@@ -74,7 +74,9 @@ export class Splitter extends LitElement {
         });
         document.addEventListener("mouseup", (e) => {
             isDragging = false;
+            try{
             self.overlay.parentNode.removeChild(self.overlay);
+            }catch(e){}
             self.overlay = null;
         });
     }
