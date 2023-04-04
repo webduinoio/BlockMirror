@@ -40,7 +40,7 @@ editor.textEditor.codeMirror.on("change", function (editor, change) {
 //*/
 
 editor.addChangeListener(function (event) {
-    console.log('Change! Better save:', event.value);
+    // console.log('Change! Better save:', event.value);
     // lint custom ref: https://juejin.cn/post/7127282061211074573
 });
 

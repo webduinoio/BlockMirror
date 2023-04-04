@@ -10,27 +10,46 @@
             margin: 0px;
         }
 
-        .txt-content {
-            width: calc(100% - 9px);
-            height: calc(100vh - 64px);
-            font-size: 1.2em;
-            margin: 3px;
-        }
-
         .send {
             margin: 6px;
+            margin-top: 12px;
             width: 50px;
             height: 32px;
+        }
+
+        .txt-content {
+            width: calc(100% - 9px);
+            height: calc(30vh - 64px);
+            font-size: 1.1em;
+            margin: 3px;
+            background-color: #ffd;
+        }
+
+        .title-resp {
+            margin: 10px;
+            margin-top: 20px;
+        }
+
+        .txt-response {
+            font-size: 1em;
+            margin: 6px;
+            border: 1px solid;
+            padding: 5px;
+            background-color: #ffd;
         }
     </style>
 </head>
 
 <body>
-    <button class='send' onclick="send()">Send</button>
-    <div class="txt-content">
-        <textarea id="show" class='txt-content' id="messageInput" cols="50"></textarea>
+    <div id="gptbot-content">
+        <button id='sendBtn' class='send' onclick="send()">Send</button>
+        <div class="txt-content">
+            <textarea id="show" class='txt-content' id="messageInput" cols="50"></textarea>
+        </div>
+        <div class="title-resp">GPT助手</div>
+        <div id="resp" class="txt-response">
+        </div>
     </div>
-
     <script>
         var isCode = false;
         var genCode = '';
@@ -41,6 +60,7 @@
             const hasWbitCheckMsg = code.includes('wbit.checkMsg');
             const hasWbitWriteSheet = code.includes('wbit.writeSheet');
             const hasWbitFunctions = hasWbitPub || hasWbitSub || hasWbitWriteSheet || hasWbitCheckMsg;
+            code = code.replaceAll('以下程式', '右邊程式');
             if (hasWbitFunctions) {
                 code = code.replaceAll('wbit = WebBit()', 'wbit = WebBit()\nwbit.connect()')
             }
@@ -48,20 +68,25 @@
         }
 
         function send() {
+            resp.innerHTML = '';
+            sendBtn.disabled = true;
             app.publish(topic, show.value);
         }
+
         function appendToShow(str, isEnd) {
-            console.log("isEnd:", isEnd);
-            var cnt = show.value;
-            cnt = cnt + str + "\n";
-            show.value = cnt;
             try {
                 setCode(str);
             } catch (e) { }
+            if (!isCode) {
+                var cnt = resp.innerHTML;
+                cnt = cnt + str + "<br>";
+                resp.innerHTML = cnt;
+            }
             if (isEnd) {
                 var code = parent.editor.getCode();
                 code = fixCode(code);
                 parent.editor.setCode(code);
+                sendBtn.disabled = false;
             }
         }
         function setCode(code) {
