@@ -17,9 +17,13 @@
             height: 32px;
         }
 
+        .title-content {
+            margin: 5px;
+        }
+
         .txt-content {
             width: calc(100% - 9px);
-            height: calc(30vh - 64px);
+            height: 90px;
             font-size: 1.1em;
             margin: 3px;
             background-color: #ffd;
@@ -43,6 +47,7 @@
 <body>
     <div id="gptbot-content">
         <button id='sendBtn' class='send' onclick="send()">Send</button>
+        <div class="title-content">說明功能需求</div>
         <div class="txt-content">
             <textarea id="show" class='txt-content' id="messageInput" cols="50"></textarea>
         </div>
@@ -84,7 +89,7 @@
             }
             if (isEnd) {
                 var code = parent.editor.getCode();
-                code = fixCode(code);
+                //code = fixCode(code);
                 parent.editor.setCode(code);
                 sendBtn.disabled = false;
             }
