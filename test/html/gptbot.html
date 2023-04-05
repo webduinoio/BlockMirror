@@ -75,7 +75,7 @@
         function send() {
             resp.innerHTML = '';
             sendBtn.disabled = true;
-            app.publish(topic, show.value);
+            app.publish(show.value);
         }
 
         function appendToShow(str, isEnd) {
@@ -108,11 +108,9 @@
             genCode = genCode + code + '\n';
             parent.editor.setCode(genCode); // 輸出提取結果
         }
-        //var topic = 'gptbot/python';
-        var topic = 'gptbot/wbit';
-        const app = new MQTTApp();
+        const app = new MQTTApp('user_'+Math.random());
         (async function () {
-            await app.init(topic, appendToShow);
+            await app.init(appendToShow);
         })();
     </script>
 </body>

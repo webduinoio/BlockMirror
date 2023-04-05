@@ -1,10 +1,24 @@
 
 class MQTTApp {
-    constructor() {
-        this.client = new Paho.Client('wss://mqtt1.webduino.io/mqtt', 'test');
+    constructor(userId) {
+        this.userId = userId;
+        this.client = new Paho.Client('wss://mqtt1.webduino.io/mqtt', userId);
         this.options = { userName: 'webduino', password: 'webduino' };
         this.onConnectPromise = null;
         this.subscriptions = {}; // 存儲訂閱關係的對象
+        this.pubTopic = 'gpt35_prompt/' + userId;
+        this.respTopic_cb = "gpt35_completion/" + this.userId;
+        this.respTopic_end = "gpt35_completion_end/" + this.userId;
+    }
+
+    async init(cb) {
+        await this.connect();
+        this.subscribe(this.respTopic_cb, function (msg) {
+            cb(msg, false);
+        });
+        this.subscribe(this.respTopic_end, function (msg) {
+            cb(msg, true);
+        });
     }
 
     async connect() {
@@ -26,9 +40,9 @@ class MQTTApp {
     }
 
     // MQTT message publish function
-    publish(topic, msg) {
+    publish(msg) {
         var payload = new Paho.Message(msg);
-        payload.destinationName = topic;
+        payload.destinationName = this.pubTopic;
         this.client.send(payload);
         console.log("Published message: " + msg);
     }
@@ -57,13 +71,4 @@ class MQTTApp {
         }
     }
 
-    async init(topic, cb) {
-        await this.connect();
-        this.subscribe(topic + "_cb", function (msg) {
-            cb(msg, false);
-        });
-        this.subscribe(topic + "_end", function (msg) {
-            cb(msg, true);
-        });
-    }
 }
